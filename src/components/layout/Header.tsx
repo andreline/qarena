@@ -15,10 +15,10 @@ const itensNav: ItemNav[] = [
   { rotulo: 'Início', rota: '/', disponivel: true },
   { rotulo: 'Meus Cursos', rota: '/cursos', disponivel: true },
   { rotulo: 'Requisitos', rota: '/requisitos', disponivel: true },
-  { rotulo: 'Instruções', rota: '/instrucoes', disponivel: false },
+  { rotulo: 'Instruções', rota: '/instrucoes', disponivel: true },
   { rotulo: 'Massa de dados', rota: '/massa-de-dados', disponivel: true },
-  { rotulo: 'Missões', rota: '/missoes', disponivel: false },
-  { rotulo: 'Central de Bugs', rota: '/central-de-bugs', disponivel: false },
+  { rotulo: 'Missões', rota: '/missoes', disponivel: true },
+  { rotulo: 'Central de Bugs', rota: '/central-de-bugs', disponivel: true },
 ]
 
 export function Header() {

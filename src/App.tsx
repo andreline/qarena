@@ -8,6 +8,9 @@ import { Login } from '@/pages/Login'
 import { Requisitos } from '@/pages/Requisitos'
 import { MassaDeDados } from '@/pages/MassaDeDados'
 import { Cursos } from '@/pages/Cursos'
+import { Instrucoes } from '@/pages/Instrucoes'
+import { Missoes } from '@/pages/Missoes'
+import { CentralDeBugs } from '@/pages/CentralDeBugs'
 import { Dashboard } from '@/pages/Dashboard'
 import { Loja } from '@/pages/Loja'
 import { Carrinho } from '@/pages/Carrinho'
@@ -26,8 +29,9 @@ export function App() {
         <Route path="/requisitos" element={<Requisitos />} />
         <Route path="/massa-de-dados" element={<MassaDeDados />} />
         <Route path="/cursos" element={<Cursos />} />
-
-        {/* Blocos seguintes: /missoes, /central-de-bugs, /instrucoes */}
+        <Route path="/instrucoes" element={<Instrucoes />} />
+        <Route path="/missoes" element={<Missoes />} />
+        <Route path="/central-de-bugs" element={<CentralDeBugs />} />
 
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -1,0 +1,209 @@
+export interface Bug {
+  id: string
+  tela: string
+  comportamentoEsperado: string
+  comportamentoAtual: string
+}
+
+export const bugs: Bug[] = [
+  {
+    id: 'CAD-01',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'O cadastro só deve ser concluído com o aceite dos termos marcado.',
+    comportamentoAtual: 'O cadastro é concluído mesmo com o aceite desmarcado.',
+  },
+  {
+    id: 'CAD-02',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'Um CPF com dígito verificador inválido deve ser recusado.',
+    comportamentoAtual: 'CPFs com dígito verificador inválido são aceitos.',
+  },
+  {
+    id: 'CAD-03',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'A confirmação de senha deve ser idêntica à senha.',
+    comportamentoAtual: 'O campo de confirmar senha não é comparado com a senha.',
+  },
+  {
+    id: 'CAD-04',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'A máscara do telefone deve funcionar para celular, com nono dígito.',
+    comportamentoAtual: 'A máscara para de atualizar a partir do décimo dígito digitado.',
+  },
+  {
+    id: 'CAD-05',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'A mensagem de sucesso só deve aparecer quando o cadastro for concluído de verdade.',
+    comportamentoAtual: 'O toast de sucesso aparece mesmo quando existem erros de validação na tela.',
+  },
+  {
+    id: 'CAD-06',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'Um e-mail já cadastrado deve gerar um aviso de duplicidade.',
+    comportamentoAtual: 'E-mails duplicados são aceitos sem nenhum aviso.',
+  },
+  {
+    id: 'LOG-01',
+    tela: 'Login',
+    comportamentoEsperado: 'Usuário com status bloqueado não deve conseguir acessar o sistema.',
+    comportamentoAtual: 'Usuário bloqueado consegue entrar normalmente.',
+  },
+  {
+    id: 'LOG-02',
+    tela: 'Login',
+    comportamentoEsperado: 'Senha incorreta deve exibir uma mensagem clara sobre a senha estar errada.',
+    comportamentoAtual: 'Senha incorreta exibe a mensagem "Usuário não encontrado".',
+  },
+  {
+    id: 'LOG-03',
+    tela: 'Login',
+    comportamentoEsperado: 'Espaços em branco no início ou no fim do e-mail devem ser ignorados.',
+    comportamentoAtual: 'E-mail com espaço no início ou no fim falha ao tentar entrar.',
+  },
+  {
+    id: 'LOG-04',
+    tela: 'Login',
+    comportamentoEsperado: 'O botão de entrar só deve ficar habilitado com e-mail e senha preenchidos.',
+    comportamentoAtual: 'O botão "Entrar" fica habilitado mesmo com os dois campos vazios.',
+  },
+  {
+    id: 'LOG-05',
+    tela: 'Login',
+    comportamentoEsperado: 'O formato do e-mail deve ser validado antes do envio.',
+    comportamentoAtual: 'E-mail sem arroba passa pela validação de formato.',
+  },
+  {
+    id: 'LOG-06',
+    tela: 'Login',
+    comportamentoEsperado: 'Usuário sem permissão deve ver uma mensagem clara, nunca uma tela vazia.',
+    comportamentoAtual: 'Usuário sem permissão entra e vê uma tela em branco, sem nenhuma mensagem.',
+  },
+  {
+    id: 'LOJ-01',
+    tela: 'Loja',
+    comportamentoEsperado: 'Produtos sem estoque não devem poder ser adicionados ao carrinho.',
+    comportamentoAtual: 'Produtos esgotados são adicionados ao carrinho normalmente.',
+  },
+  {
+    id: 'LOJ-02',
+    tela: 'Loja',
+    comportamentoEsperado: 'O filtro de categoria deve mostrar apenas produtos daquela categoria.',
+    comportamentoAtual: 'Selecionar uma categoria específica não mostra nenhum produto.',
+  },
+  {
+    id: 'LOJ-03',
+    tela: 'Loja',
+    comportamentoEsperado: 'A busca por produto deve funcionar independente de maiúsculas ou minúsculas.',
+    comportamentoAtual: 'Buscar em letras minúsculas não encontra produtos com nomes capitalizados.',
+  },
+  {
+    id: 'CAR-01',
+    tela: 'Carrinho',
+    comportamentoEsperado: 'A quantidade mínima de um item no carrinho deve ser 1.',
+    comportamentoAtual: 'O botão de diminuir quantidade permite chegar a 0 sem remover o item.',
+  },
+  {
+    id: 'CAR-02',
+    tela: 'Carrinho',
+    comportamentoEsperado: 'O total do carrinho deve ser a soma de cada item multiplicado pela quantidade.',
+    comportamentoAtual: 'O total soma o preço unitário de cada item, ignorando a quantidade.',
+  },
+  {
+    id: 'CAR-03',
+    tela: 'Carrinho',
+    comportamentoEsperado: 'O contador de itens do carrinho deve refletir o carrinho após qualquer alteração.',
+    comportamentoAtual: 'O contador não é atualizado quando um item é removido do carrinho.',
+  },
+  {
+    id: 'CHK-01',
+    tela: 'Checkout',
+    comportamentoEsperado: 'O cupom QA10 deve conceder exatamente 10% de desconto sobre o subtotal.',
+    comportamentoAtual: 'O cupom QA10 anuncia 10% mas aplica apenas metade disso.',
+  },
+  {
+    id: 'CHK-02',
+    tela: 'Checkout',
+    comportamentoEsperado: 'Cupons fora do prazo de validade não devem ser aceitos.',
+    comportamentoAtual: 'Cupons expirados continuam sendo aceitos normalmente.',
+  },
+  {
+    id: 'CHK-03',
+    tela: 'Checkout',
+    comportamentoEsperado: 'O código do cupom deve ser reconhecido em maiúsculas ou minúsculas.',
+    comportamentoAtual: 'Digitar o código do cupom em minúsculo faz o cupom não ser reconhecido.',
+  },
+  {
+    id: 'CHK-04',
+    tela: 'Checkout',
+    comportamentoEsperado: 'Um cupom inválido deve exibir uma mensagem informando que o código não foi encontrado.',
+    comportamentoAtual: 'Aplicar um cupom inválido não faz nada e não avisa o motivo.',
+  },
+  {
+    id: 'CHK-05',
+    tela: 'Checkout',
+    comportamentoEsperado: 'Remover o cupom aplicado deve retornar o total ao valor original.',
+    comportamentoAtual: 'O desconto continua contabilizado no total mesmo depois de remover o cupom.',
+  },
+  {
+    id: 'CHK-06',
+    tela: 'Checkout',
+    comportamentoEsperado: 'A compra não deve ser concluída se o saldo de créditos QA for insuficiente.',
+    comportamentoAtual: 'A compra é concluída mesmo sem créditos suficientes, deixando o saldo negativo.',
+  },
+  {
+    id: 'CHK-07',
+    tela: 'Checkout',
+    comportamentoEsperado: 'O botão de finalizar compra deve impedir o envio duplicado do mesmo pedido.',
+    comportamentoAtual: 'Clicar duas vezes rapidamente cria dois pedidos separados.',
+  },
+  {
+    id: 'PERF-01',
+    tela: 'Perfil do Usuário',
+    comportamentoEsperado: 'A troca de senha deve exigir a senha atual correta.',
+    comportamentoAtual: 'A senha é trocada mesmo informando a senha atual errada.',
+  },
+  {
+    id: 'PERF-02',
+    tela: 'Perfil do Usuário',
+    comportamentoEsperado: 'Um e-mail já usado por outra conta não deve ser aceito ao editar o perfil.',
+    comportamentoAtual: 'O sistema aceita salvar um e-mail que já pertence a outra conta.',
+  },
+  {
+    id: 'PERF-03',
+    tela: 'Perfil do Usuário',
+    comportamentoEsperado: 'As alterações salvas no perfil devem persistir, inclusive o telefone.',
+    comportamentoAtual: 'O telefone volta ao valor antigo depois de salvar e recarregar a página.',
+  },
+  {
+    id: 'PERF-04',
+    tela: 'Perfil do Usuário',
+    comportamentoEsperado: 'O nome não pode ser salvo em branco.',
+    comportamentoAtual: 'O formulário aceita salvar o nome completamente vazio.',
+  },
+  {
+    id: 'PED-01',
+    tela: 'Meus Pedidos',
+    comportamentoEsperado: 'A lista de pedidos deve mostrar apenas os pedidos do usuário logado.',
+    comportamentoAtual: 'Pedidos de outras contas aparecem misturados na lista.',
+  },
+  {
+    id: 'PED-02',
+    tela: 'Meus Pedidos',
+    comportamentoEsperado: 'Os pedidos devem aparecer do mais recente para o mais antigo.',
+    comportamentoAtual: 'Os pedidos aparecem na ordem em que foram criados, do mais antigo primeiro.',
+  },
+  {
+    id: 'PED-03',
+    tela: 'Meus Pedidos',
+    comportamentoEsperado: 'O valor exibido em cada pedido deve considerar o desconto do cupom usado.',
+    comportamentoAtual: 'O valor exibido ignora o desconto e mostra o subtotal cheio.',
+  },
+  {
+    id: 'PED-04',
+    tela: 'Meus Pedidos',
+    comportamentoEsperado: 'O filtro por status deve mostrar apenas pedidos com aquele status.',
+    comportamentoAtual: 'O filtro por status não muda a lista exibida.',
+  },
+]
+
+export const totalBugsCatalogados = bugs.length

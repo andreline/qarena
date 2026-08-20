@@ -102,7 +102,7 @@ export const labs: Lab[] = [
     icone: Target,
     cor: 'purple',
     bugs: 0,
-    disponivel: false,
+    disponivel: true,
   },
 ]
 
