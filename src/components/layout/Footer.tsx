@@ -1,13 +1,42 @@
+import { useRef } from 'react'
+import { useToast } from '@/components/ui/Toast'
+
+const CLIQUES_PARA_REVELAR = 5
+const JANELA_EM_MS = 2000
+
 export function Footer() {
+  const cliques = useRef(0)
+  const ultimoCliqueEm = useRef(0)
+  const { mostrarToast } = useToast()
+
+  function aoClicarLogo() {
+    const agora = Date.now()
+    const dentroDaJanela = agora - ultimoCliqueEm.current < JANELA_EM_MS
+    ultimoCliqueEm.current = agora
+
+    cliques.current = dentroDaJanela ? cliques.current + 1 : 1
+
+    if (cliques.current === CLIQUES_PARA_REVELAR) {
+      mostrarToast('Você encontrou um easter egg escondido no QArena. Isso não conta como bug reportável.', 'sucesso')
+      cliques.current = 0
+    }
+  }
+
   return (
     <footer className="border-t border-white/5 bg-base-900/60" data-testid="footer">
       <div className="container-arena flex flex-col gap-4 py-8 text-sm text-ink-muted">
-        <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={aoClicarLogo}
+          data-testid="footer-logo"
+          aria-label="QArena"
+          className="flex w-fit items-center gap-2 cursor-pointer"
+        >
           <span className="flex h-7 w-7 items-center justify-center rounded-md bg-neon-purple/20 border border-neon-purple/40 font-display text-sm font-bold text-neon-cyan">
             Q
           </span>
           <span className="font-display text-base font-semibold text-ink">QArena</span>
-        </div>
+        </button>
 
         <p data-testid="footer-autoria">
           Projeto educacional criado por Andreline Lira para ajudar novos QAs a praticarem testes na prática.
