@@ -7,6 +7,7 @@ import { Cadastro } from '@/pages/Cadastro'
 import { Login } from '@/pages/Login'
 import { Requisitos } from '@/pages/Requisitos'
 import { MassaDeDados } from '@/pages/MassaDeDados'
+import { Cursos } from '@/pages/Cursos'
 import { Dashboard } from '@/pages/Dashboard'
 import { NotFound } from '@/pages/NotFound'
 
@@ -19,6 +20,7 @@ export function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/requisitos" element={<Requisitos />} />
         <Route path="/massa-de-dados" element={<MassaDeDados />} />
+        <Route path="/cursos" element={<Cursos />} />
 
         {/* Blocos seguintes: /missoes, /central-de-bugs, /instrucoes */}
 
