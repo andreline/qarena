@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fontes */
+  --font-display: "Sora", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Fundos */
+  --color-base-900: #07070f;
+  --color-base-800: #0a0a12;
+  --color-base-700: #12121e;
+
+  /* Texto */
+  --color-ink: #e8e8f0;
+  --color-ink-muted: #9a9ab0;
+
+  /* Neons */
+  --color-neon-cyan: #22d3ee;
+  --color-neon-blue: #3b82f6;
+  --color-neon-purple: #7c3aed;
+  --color-neon-magenta: #e935c1;
+
+  /* Semanticas */
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-base-900);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: var(--color-neon-purple);
+    color: var(--color-ink);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-neon-cyan);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .arena-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse 60% 50% at 0% 0%, rgba(124, 58, 237, 0.28), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 0%, rgba(34, 211, 238, 0.24), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba(233, 53, 193, 0.22), transparent 60%);
+    background-color: var(--color-base-900);
+  }
+
+  .arena-grid {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  .glass {
+    background-color: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(90deg, var(--color-neon-cyan), var(--color-neon-purple), var(--color-neon-magenta));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .container-arena {
+    width: 100%;
+    max-width: 1140px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+}
