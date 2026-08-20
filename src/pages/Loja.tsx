@@ -82,14 +82,23 @@ export function Loja() {
 
           return (
             <GlassCard key={produto.id} className="flex flex-col gap-4 p-6" data-testid={`loja-card-${produto.id}`}>
-              <div className="flex items-center justify-between">
-                <span className={cn('flex h-11 w-11 items-center justify-center rounded-xl border', classesPorCor[produto.cor])}>
-                  <Icone size={22} />
-                </span>
-                <Badge tom={semEstoque ? 'danger' : 'success'}>{semEstoque ? 'Esgotado' : 'Disponível'}</Badge>
+              <div className="relative -mx-6 -mt-6 h-44 overflow-hidden rounded-t-2xl">
+                <img
+                  src={produto.imagem}
+                  alt={produto.nome}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <Badge tom={semEstoque ? 'danger' : 'success'} className="absolute right-3 top-3">
+                  {semEstoque ? 'Esgotado' : 'Disponível'}
+                </Badge>
               </div>
 
               <div className="flex flex-col gap-1.5">
+                <span className={cn('inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium', classesPorCor[produto.cor])}>
+                  <Icone size={12} />
+                  {produto.categoria}
+                </span>
                 <h2 className="font-display font-semibold text-ink">{produto.nome}</h2>
                 <p className="text-sm text-ink-muted">{produto.descricao}</p>
               </div>

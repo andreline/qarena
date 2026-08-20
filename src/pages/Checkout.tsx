@@ -123,10 +123,13 @@ export function Checkout() {
       <GlassCard className="flex flex-col gap-3 p-6" data-testid="checkout-resumo">
         <h2 className="font-display font-semibold text-ink">Resumo do pedido</h2>
         {itensComProduto.map(({ item, produto }) => (
-          <div key={produto.id} className="flex items-center justify-between text-sm">
-            <span className="text-ink-muted">
-              {produto.nome} <span className="font-mono">x{item.quantidade}</span>
-            </span>
+          <div key={produto.id} className="flex items-center justify-between gap-3 text-sm">
+            <div className="flex items-center gap-3">
+              <img src={produto.imagem} alt={produto.nome} className="h-9 w-9 rounded-lg border border-white/10 object-cover" />
+              <span className="text-ink-muted">
+                {produto.nome} <span className="font-mono">x{item.quantidade}</span>
+              </span>
+            </div>
             <span className="font-mono text-ink">{formatoMoeda.format(produto.preco * item.quantidade)}</span>
           </div>
         ))}

@@ -41,7 +41,6 @@ export function Carrinho() {
 
       <div className="flex flex-col gap-4" data-testid="carrinho-lista-itens">
         {itensComProduto.map(({ item, produto }) => {
-          const Icone = produto.icone
           const subtotal = produto.preco * item.quantidade
 
           return (
@@ -51,9 +50,11 @@ export function Carrinho() {
               data-testid={`carrinho-item-${produto.id}`}
             >
               <div className="flex items-center gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-ink-muted">
-                  <Icone size={20} />
-                </span>
+                <img
+                  src={produto.imagem}
+                  alt={produto.nome}
+                  className="h-11 w-11 shrink-0 rounded-xl border border-white/10 object-cover"
+                />
                 <div>
                   <p className="font-display font-medium text-ink">{produto.nome}</p>
                   <p className="font-mono text-sm text-ink-muted">{formatoMoeda.format(produto.preco)} cada</p>

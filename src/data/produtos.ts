@@ -11,6 +11,7 @@ export interface Produto {
   estoque: number
   icone: LucideIcon
   cor: CorProduto
+  imagem: string
 }
 
 export const categorias = ['Todos', 'Canecas', 'Camisetas', 'Adesivos', 'Acessórios']
@@ -25,6 +26,7 @@ export const produtos: Produto[] = [
     estoque: 12,
     icone: Coffee,
     cor: 'cyan',
+    imagem: '/produtos/caneca-bug-hunter.jpg',
   },
   {
     id: 'caneca-erro-404',
@@ -35,6 +37,7 @@ export const produtos: Produto[] = [
     estoque: 0,
     icone: Coffee,
     cor: 'purple',
+    imagem: '/produtos/caneca-erro-404.jpg',
   },
   {
     id: 'camiseta-qa-do-zero',
@@ -45,6 +48,7 @@ export const produtos: Produto[] = [
     estoque: 8,
     icone: Shirt,
     cor: 'magenta',
+    imagem: '/produtos/camiseta-qa-do-zero.jpg',
   },
   {
     id: 'camiseta-testei-e-quebrei',
@@ -55,6 +59,7 @@ export const produtos: Produto[] = [
     estoque: 5,
     icone: Shirt,
     cor: 'cyan',
+    imagem: '/produtos/camiseta-testei-e-quebrei.jpg',
   },
   {
     id: 'adesivo-nao-reproduz',
@@ -65,6 +70,7 @@ export const produtos: Produto[] = [
     estoque: 30,
     icone: Sticker,
     cor: 'purple',
+    imagem: '/produtos/adesivo-nao-reproduz.jpg',
   },
   {
     id: 'adesivo-encontrei-um-bug',
@@ -75,6 +81,7 @@ export const produtos: Produto[] = [
     estoque: 30,
     icone: Sticker,
     cor: 'magenta',
+    imagem: '/produtos/adesivo-encontrei-um-bug.jpg',
   },
   {
     id: 'mochila-qarena',
@@ -85,6 +92,7 @@ export const produtos: Produto[] = [
     estoque: 3,
     icone: Backpack,
     cor: 'cyan',
+    imagem: '/produtos/mochila-qarena.jpg',
   },
   {
     id: 'garrafa-hidratacao-qa',
@@ -95,5 +103,6 @@ export const produtos: Produto[] = [
     estoque: 15,
     icone: Package,
     cor: 'purple',
+    imagem: '/produtos/garrafa-hidratacao-qa.jpg',
   },
 ]
