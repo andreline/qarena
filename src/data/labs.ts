@@ -82,7 +82,7 @@ export const labs: Lab[] = [
     icone: User,
     cor: 'magenta',
     bugs: 4,
-    disponivel: false,
+    disponivel: true,
   },
   {
     id: 'pedidos',
@@ -92,7 +92,7 @@ export const labs: Lab[] = [
     icone: Package,
     cor: 'cyan',
     bugs: 4,
-    disponivel: false,
+    disponivel: true,
   },
   {
     id: 'missoes',

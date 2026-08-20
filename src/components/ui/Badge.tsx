@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
-type TomBadge = 'cyan' | 'blue' | 'purple' | 'magenta' | 'success' | 'danger' | 'muted'
+type TomBadge = 'cyan' | 'blue' | 'purple' | 'magenta' | 'success' | 'warning' | 'danger' | 'muted'
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tom?: TomBadge
@@ -13,6 +13,7 @@ const classesTom: Record<TomBadge, string> = {
   purple: 'bg-neon-purple/10 text-neon-purple border-neon-purple/30',
   magenta: 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30',
   success: 'bg-success/10 text-success border-success/30',
+  warning: 'bg-warning/10 text-warning border-warning/30',
   danger: 'bg-danger/10 text-danger border-danger/30',
   muted: 'bg-white/5 text-ink-muted border-white/10',
 }

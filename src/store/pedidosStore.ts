@@ -7,6 +7,8 @@ export interface ItemPedido {
   precoUnitario: number
 }
 
+export type StatusPedido = 'Processando' | 'Enviado' | 'Entregue'
+
 export interface Pedido {
   id: string
   numeroPedido: string
@@ -16,10 +18,13 @@ export interface Pedido {
   desconto: number
   total: number
   cupomUsado: string | null
+  status: StatusPedido
   criadoEm: string
 }
 
-type DadosNovoPedido = Omit<Pedido, 'id' | 'numeroPedido' | 'criadoEm'>
+type DadosNovoPedido = Omit<Pedido, 'id' | 'numeroPedido' | 'criadoEm' | 'status'>
+
+const statusPossiveis: StatusPedido[] = ['Processando', 'Enviado', 'Entregue']
 
 interface PedidosState {
   pedidos: Pedido[]
@@ -36,11 +41,13 @@ export const usePedidosStore = create<PedidosState>()(
       criarPedido: (dados) => {
         const estado = get()
         const numeroPedido = `PED-${String(estado.proximoNumero).padStart(4, '0')}`
+        const status = statusPossiveis[Math.floor(Math.random() * statusPossiveis.length)]
 
         const pedido: Pedido = {
           ...dados,
           id: crypto.randomUUID(),
           numeroPedido,
+          status,
           criadoEm: new Date().toISOString(),
         }
 

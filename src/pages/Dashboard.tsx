@@ -7,8 +7,8 @@ import { useAuthStore } from '@/store/authStore'
 const atalhos = [
   { rotulo: 'Loja', rota: '/app/loja', Icone: Store, disponivel: true },
   { rotulo: 'Carrinho', rota: '/app/carrinho', Icone: ShoppingCart, disponivel: true },
-  { rotulo: 'Perfil', rota: '/app/perfil', Icone: User, disponivel: false },
-  { rotulo: 'Meus Pedidos', rota: '/app/pedidos', Icone: Package, disponivel: false },
+  { rotulo: 'Perfil', rota: '/app/perfil', Icone: User, disponivel: true },
+  { rotulo: 'Meus Pedidos', rota: '/app/pedidos', Icone: Package, disponivel: true },
 ]
 
 export function Dashboard() {

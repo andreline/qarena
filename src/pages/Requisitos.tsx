@@ -66,8 +66,26 @@ const secoes: SecaoRequisitos[] = [
       'O botão de finalizar compra deve impedir o envio duplicado do mesmo pedido',
     ],
   },
-  { id: 'perfil', titulo: 'Perfil do Usuário', itens: null },
-  { id: 'pedidos', titulo: 'Meus Pedidos', itens: null },
+  {
+    id: 'perfil',
+    titulo: 'Perfil do Usuário',
+    itens: [
+      'A troca de senha deve exigir a senha atual correta',
+      'Um e-mail já usado por outra conta não deve ser aceito na edição do perfil',
+      'As alterações salvas no perfil devem persistir corretamente, inclusive o telefone',
+      'O nome não pode ser salvo em branco',
+    ],
+  },
+  {
+    id: 'pedidos',
+    titulo: 'Meus Pedidos',
+    itens: [
+      'A lista de pedidos deve mostrar apenas os pedidos do usuário logado',
+      'Os pedidos devem aparecer do mais recente para o mais antigo',
+      'O valor exibido em cada pedido deve ser o total pago, já considerando o desconto do cupom',
+      'O filtro por status deve mostrar apenas pedidos com aquele status',
+    ],
+  },
 ]
 
 export function Requisitos() {
