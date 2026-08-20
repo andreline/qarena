@@ -53,7 +53,19 @@ const secoes: SecaoRequisitos[] = [
       'O contador de itens do carrinho deve refletir corretamente o que está no carrinho, inclusive depois de remover um item',
     ],
   },
-  { id: 'checkout', titulo: 'Cupom e Checkout', itens: null },
+  {
+    id: 'checkout',
+    titulo: 'Cupom e Checkout',
+    itens: [
+      'O cupom QA10 deve conceder exatamente 10% de desconto sobre o subtotal',
+      'Cupons fora do prazo de validade não devem ser aceitos',
+      'O código do cupom deve ser reconhecido independente de estar em maiúsculas ou minúsculas',
+      'Um cupom inválido deve exibir uma mensagem clara informando que o código não foi encontrado',
+      'Remover o cupom aplicado deve retornar o total ao valor original, sem desconto',
+      'A compra não deve ser concluída se o saldo de créditos QA for insuficiente',
+      'O botão de finalizar compra deve impedir o envio duplicado do mesmo pedido',
+    ],
+  },
   { id: 'perfil', titulo: 'Perfil do Usuário', itens: null },
   { id: 'pedidos', titulo: 'Meus Pedidos', itens: null },
 ]

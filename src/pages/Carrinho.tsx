@@ -112,9 +112,11 @@ export function Carrinho() {
       </GlassCard>
 
       <div className="flex justify-end">
-        <Button variante="primary" disabled data-testid="carrinho-btn-checkout">
-          Ir para o checkout (em breve)
-        </Button>
+        <Link to="/app/checkout">
+          <Button variante="primary" data-testid="carrinho-btn-checkout">
+            Ir para o checkout
+          </Button>
+        </Link>
       </div>
     </div>
   )

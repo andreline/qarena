@@ -72,7 +72,7 @@ export const labs: Lab[] = [
     icone: Ticket,
     cor: 'purple',
     bugs: 7,
-    disponivel: false,
+    disponivel: true,
   },
   {
     id: 'perfil',

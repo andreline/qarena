@@ -1,7 +1,8 @@
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Wallet } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
 import { BotaoCopiar } from '@/components/ui/BotaoCopiar'
+import { cupons } from '@/data/cupons'
 
 interface UsuarioTeste {
   slug: string
@@ -47,7 +48,7 @@ const usuariosTeste: UsuarioTeste[] = [
   },
 ]
 
-const secoesFuturas = ['Cupons', 'Cartões de teste', 'Produtos da loja']
+const formatoData = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' })
 
 export function MassaDeDados() {
   return (
@@ -64,37 +65,51 @@ export function MassaDeDados() {
         Nunca use dados reais de clientes, nem seus próprios dados pessoais, em ambiente de teste.
       </div>
 
-      <div className="mx-auto grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
-        {usuariosTeste.map((usuario) => (
-          <GlassCard key={usuario.slug} className="flex flex-col gap-3 p-5" data-testid={`massa-dados-item-${usuario.slug}`}>
-            <div className="flex items-center justify-between">
-              <Badge tom={usuario.tom}>{usuario.etiqueta}</Badge>
-            </div>
-            <p className="text-sm text-ink-muted">{usuario.descricao}</p>
-
-            <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-base-900/60 px-3 py-2">
-              <span className="truncate font-mono text-sm text-ink">{usuario.email}</span>
-              <BotaoCopiar valor={usuario.email} testId={`massa-dados-copiar-email-${usuario.slug}`} />
-            </div>
-
-            <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-base-900/60 px-3 py-2">
-              <span className="truncate font-mono text-sm text-ink">{usuario.senha}</span>
-              <BotaoCopiar valor={usuario.senha} testId={`massa-dados-copiar-senha-${usuario.slug}`} />
-            </div>
-          </GlassCard>
-        ))}
-      </div>
-
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">
-        <h2 className="text-center font-display text-xl font-semibold text-ink">Outras massas de dados</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {secoesFuturas.map((titulo) => (
-            <GlassCard key={titulo} className="flex flex-col items-center gap-2 p-5 text-center opacity-70">
-              <span className="font-display font-semibold text-ink">{titulo}</span>
-              <Badge tom="muted">Em breve</Badge>
+        <h2 className="text-center font-display text-xl font-semibold text-ink">Usuários de teste</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {usuariosTeste.map((usuario) => (
+            <GlassCard key={usuario.slug} className="flex flex-col gap-3 p-5" data-testid={`massa-dados-item-${usuario.slug}`}>
+              <div className="flex items-center justify-between">
+                <Badge tom={usuario.tom}>{usuario.etiqueta}</Badge>
+              </div>
+              <p className="text-sm text-ink-muted">{usuario.descricao}</p>
+
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-base-900/60 px-3 py-2">
+                <span className="truncate font-mono text-sm text-ink">{usuario.email}</span>
+                <BotaoCopiar valor={usuario.email} testId={`massa-dados-copiar-email-${usuario.slug}`} />
+              </div>
+
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-base-900/60 px-3 py-2">
+                <span className="truncate font-mono text-sm text-ink">{usuario.senha}</span>
+                <BotaoCopiar valor={usuario.senha} testId={`massa-dados-copiar-senha-${usuario.slug}`} />
+              </div>
             </GlassCard>
           ))}
         </div>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">
+        <h2 className="text-center font-display text-xl font-semibold text-ink">Cupons de teste</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {cupons.map((cupom) => (
+            <GlassCard key={cupom.codigo} className="flex flex-col gap-3 p-5" data-testid={`massa-dados-cupom-${cupom.codigo.toLowerCase()}`}>
+              <Badge tom="cyan">{cupom.percentualAnunciado}% de desconto</Badge>
+              <p className="text-sm text-ink-muted">{cupom.descricao}</p>
+              <p className="text-xs text-ink-muted/70">Válido até {formatoData.format(new Date(cupom.validoAte))}</p>
+              <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-base-900/60 px-3 py-2">
+                <span className="truncate font-mono text-sm text-ink">{cupom.codigo}</span>
+                <BotaoCopiar valor={cupom.codigo} testId={`massa-dados-copiar-cupom-${cupom.codigo.toLowerCase()}`} />
+              </div>
+            </GlassCard>
+          ))}
+        </div>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-3xl items-start gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-ink-muted">
+        <Wallet size={18} className="mt-0.5 shrink-0 text-neon-cyan" />
+        Nesta fase, a compra é finalizada com os créditos QA da própria conta (veja o saldo na barra lateral da área
+        logada). Cartão fictício e outras formas de pagamento chegam em uma fase futura.
       </div>
     </div>
   )

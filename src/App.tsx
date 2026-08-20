@@ -11,6 +11,7 @@ import { Cursos } from '@/pages/Cursos'
 import { Dashboard } from '@/pages/Dashboard'
 import { Loja } from '@/pages/Loja'
 import { Carrinho } from '@/pages/Carrinho'
+import { Checkout } from '@/pages/Checkout'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -34,8 +35,9 @@ export function App() {
           <Route path="/app" element={<Dashboard />} />
           <Route path="/app/loja" element={<Loja />} />
           <Route path="/app/carrinho" element={<Carrinho />} />
+          <Route path="/app/checkout" element={<Checkout />} />
 
-          {/* Blocos seguintes: /app/checkout, /app/perfil, /app/pedidos */}
+          {/* Blocos seguintes: /app/perfil, /app/pedidos */}
         </Route>
       </Route>
     </Routes>
