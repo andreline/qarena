@@ -1,5 +1,6 @@
-import { BookOpen, ClipboardCheck, FileText, Search, UserPlus } from 'lucide-react'
+import { BookOpen, ClipboardCheck, Download, FileSpreadsheet, FileText, Search, UserPlus } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
+import { Button } from '@/components/ui/Button'
 import { BotaoCopiar } from '@/components/ui/BotaoCopiar'
 
 const passos = [
@@ -50,6 +51,29 @@ const templateBugReport = `## Título do bug
 **Ambiente:** QArena (ambiente de treino)
 `
 
+const modelos = [
+  {
+    id: 'caderno-de-teste',
+    titulo: 'Caderno de Teste',
+    arquivo: '/modelos/caderno-de-teste-qa.xlsx',
+    nomeArquivo: 'caderno-de-teste-qa.xlsx',
+    Icone: FileSpreadsheet,
+    descricao:
+      'Uma planilha para registrar os casos de teste que você executar aqui no QArena, seja um regressivo completo ou um teste exploratório em uma tela só. Tem uma aba explicando como preencher e a legenda de status (Passou, Falhou, Bloqueado, Não Executado).',
+    dica: 'Use um caderno por ciclo: um para testar o cadastro, outro para o checkout, e assim por diante.',
+  },
+  {
+    id: 'planejamento-de-qualidade',
+    titulo: 'Planejamento de Qualidade',
+    arquivo: '/modelos/planejamento-de-qualidade.docx',
+    nomeArquivo: 'planejamento-de-qualidade.docx',
+    Icone: FileText,
+    descricao:
+      'Um documento para planejar os testes antes de começar a testar de fato: escopo, cenários de sucesso, erro e exceção (no formato Dado, Quando, Então), riscos e critérios de pronto.',
+    dica: 'Preencha esse modelo antes de abrir o Caderno de Teste, pensando em qual laboratório do QArena você vai investigar.',
+  },
+]
+
 export function Instrucoes() {
   return (
     <div className="container-arena flex flex-col gap-12 py-16">
@@ -83,6 +107,34 @@ export function Instrucoes() {
         <GlassCard className="p-6" data-testid="instrucoes-template-bug-report">
           <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-sm text-ink-muted">{templateBugReport}</pre>
         </GlassCard>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+        <div className="flex items-center gap-2">
+          <Download size={20} className="text-neon-cyan" />
+          <h2 className="font-display text-xl font-semibold text-ink">Modelos para organizar seus testes</h2>
+        </div>
+        <p className="text-sm text-ink-muted">
+          Dois modelos prontos, criados pela Andreline, para você usar enquanto testa o QArena (ou qualquer outro
+          projeto depois).
+        </p>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {modelos.map((modelo) => (
+            <GlassCard key={modelo.id} className="flex flex-col gap-3 p-6" data-testid={`instrucoes-modelo-${modelo.id}`}>
+              <modelo.Icone size={22} className="text-neon-purple" />
+              <h3 className="font-display font-semibold text-ink">{modelo.titulo}</h3>
+              <p className="text-sm text-ink-muted">{modelo.descricao}</p>
+              <p className="text-xs text-ink-muted/70">{modelo.dica}</p>
+              <a href={modelo.arquivo} download={modelo.nomeArquivo} className="mt-auto">
+                <Button variante="secondary" tamanho="sm" data-testid={`instrucoes-btn-baixar-${modelo.id}`} className="w-full">
+                  <Download size={16} />
+                  Baixar {modelo.nomeArquivo}
+                </Button>
+              </a>
+            </GlassCard>
+          ))}
+        </div>
       </div>
     </div>
   )
