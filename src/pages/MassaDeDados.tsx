@@ -1,8 +1,11 @@
-import { AlertTriangle, Wallet } from 'lucide-react'
+import { useState } from 'react'
+import { AlertTriangle, IdCard, RefreshCw, Wallet } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
+import { Button } from '@/components/ui/Button'
 import { BotaoCopiar } from '@/components/ui/BotaoCopiar'
 import { cupons } from '@/data/cupons'
+import { gerarCPF } from '@/lib/mascaras'
 
 interface UsuarioTeste {
   slug: string
@@ -51,6 +54,8 @@ const usuariosTeste: UsuarioTeste[] = [
 const formatoData = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' })
 
 export function MassaDeDados() {
+  const [cpfGerado, setCpfGerado] = useState(() => gerarCPF())
+
   return (
     <div className="container-arena flex flex-col gap-8 py-16">
       <div className="flex flex-col gap-2 text-center">
@@ -63,6 +68,37 @@ export function MassaDeDados() {
       <div className="mx-auto flex w-full max-w-3xl items-start gap-3 rounded-lg border border-warning/30 bg-warning/5 px-4 py-3 text-sm text-warning" data-testid="massa-dados-aviso">
         <AlertTriangle size={18} className="mt-0.5 shrink-0" />
         Nunca use dados reais de clientes, nem seus próprios dados pessoais, em ambiente de teste.
+      </div>
+
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">
+        <h2 className="text-center font-display text-xl font-semibold text-ink">Gerador de CPF</h2>
+        <p className="mx-auto max-w-xl text-center text-sm text-ink-muted">
+          Um CPF fictício, gerado na hora, com dígito verificador válido. Use no formulário de Cadastro para nunca
+          precisar digitar o seu CPF de verdade.
+        </p>
+
+        <GlassCard className="mx-auto flex w-full items-center justify-between gap-4 p-5" data-testid="massa-dados-gerador-cpf">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan">
+              <IdCard size={20} />
+            </span>
+            <span data-testid="massa-dados-cpf-gerado" className="font-mono text-lg text-ink">
+              {cpfGerado}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <BotaoCopiar valor={cpfGerado} testId="massa-dados-btn-copiar-cpf" />
+            <Button
+              variante="secondary"
+              tamanho="sm"
+              onClick={() => setCpfGerado(gerarCPF())}
+              data-testid="massa-dados-btn-gerar-cpf"
+            >
+              <RefreshCw size={16} />
+              Gerar novo
+            </Button>
+          </div>
+        </GlassCard>
       </div>
 
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">

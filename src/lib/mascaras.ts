@@ -13,6 +13,27 @@ export function formatarTelefone(valor: string): string {
   return `(${digitos.slice(0, 2)}) ${digitos.slice(2, 6)}-${digitos.slice(6, 10)}`
 }
 
+export function gerarCPF(): string {
+  const numeros = Array.from({ length: 9 }, () => Math.floor(Math.random() * 10))
+
+  function calcularDigito(base: number[]): number {
+    let soma = 0
+    let peso = base.length + 1
+    for (const numero of base) {
+      soma += numero * peso
+      peso--
+    }
+    const resto = soma % 11
+    return resto < 2 ? 0 : 11 - resto
+  }
+
+  const dv1 = calcularDigito(numeros)
+  const dv2 = calcularDigito([...numeros, dv1])
+  const todosOsDigitos = [...numeros, dv1, dv2].join('')
+
+  return formatarCPF(todosOsDigitos)
+}
+
 export function validarCPF(cpf: string): boolean {
   const digitos = cpf.replace(/\D/g, '')
   if (digitos.length !== 11) return false
