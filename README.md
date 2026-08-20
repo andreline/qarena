@@ -18,3 +18,7 @@ npm run dev
 ```
 
 Este projeto é 100% front-end. Não existe backend, banco de dados ou autenticação real, tudo funciona no navegador.
+
+## Licença
+
+Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
