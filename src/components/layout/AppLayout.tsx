@@ -1,6 +1,7 @@
 import { Outlet, Link } from 'react-router-dom'
 import { Store, ShoppingCart, User, Package, LogOut } from 'lucide-react'
 import { Footer } from './Footer'
+import { useCarrinhoStore } from '@/store/carrinhoStore'
 
 interface AppLayoutProps {
   nome: string
@@ -17,6 +18,8 @@ const atalhos = [
 ]
 
 export function AppLayout({ nome, numeroConta, creditos, aoSair }: AppLayoutProps) {
+  const quantidadeCarrinho = useCarrinhoStore((estado) => estado.quantidadeTotal)
+
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
       <div className="arena-bg" aria-hidden="true" />
@@ -52,10 +55,20 @@ export function AppLayout({ nome, numeroConta, creditos, aoSair }: AppLayoutProp
               key={rota}
               to={rota}
               data-testid={`app-sidebar-link-${rotulo.toLowerCase().replace(/\s+/g, '-')}`}
-              className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:bg-white/5 hover:text-ink"
+              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:bg-white/5 hover:text-ink"
             >
-              <Icone size={18} />
-              {rotulo}
+              <span className="flex items-center gap-2.5">
+                <Icone size={18} />
+                {rotulo}
+              </span>
+              {rota === '/app/carrinho' && quantidadeCarrinho > 0 && (
+                <span
+                  data-testid="app-sidebar-badge-carrinho"
+                  className="flex h-5 min-w-5 items-center justify-center rounded-full bg-neon-cyan px-1.5 font-mono text-xs font-semibold text-base-900"
+                >
+                  {quantidadeCarrinho}
+                </span>
+              )}
             </Link>
           ))}
         </nav>

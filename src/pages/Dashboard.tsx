@@ -5,10 +5,10 @@ import { Badge } from '@/components/ui/Badge'
 import { useAuthStore } from '@/store/authStore'
 
 const atalhos = [
-  { rotulo: 'Loja', rota: '/app/loja', Icone: Store },
-  { rotulo: 'Carrinho', rota: '/app/carrinho', Icone: ShoppingCart },
-  { rotulo: 'Perfil', rota: '/app/perfil', Icone: User },
-  { rotulo: 'Meus Pedidos', rota: '/app/pedidos', Icone: Package },
+  { rotulo: 'Loja', rota: '/app/loja', Icone: Store, disponivel: true },
+  { rotulo: 'Carrinho', rota: '/app/carrinho', Icone: ShoppingCart, disponivel: true },
+  { rotulo: 'Perfil', rota: '/app/perfil', Icone: User, disponivel: false },
+  { rotulo: 'Meus Pedidos', rota: '/app/pedidos', Icone: Package, disponivel: false },
 ]
 
 export function Dashboard() {
@@ -56,20 +56,35 @@ export function Dashboard() {
       </GlassCard>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {atalhos.map(({ rotulo, rota, Icone }) => (
-          <GlassCard
-            key={rota}
-            data-testid={`dashboard-card-${rotulo.toLowerCase().replace(/\s+/g, '-')}`}
-            className="flex flex-col gap-3 p-5 opacity-70"
-          >
-            <div className="flex items-center justify-between">
-              <Icone size={22} className="text-ink-muted" />
-              <Badge tom="muted">Em breve</Badge>
-            </div>
-            <span className="font-display font-semibold text-ink">{rotulo}</span>
-          </GlassCard>
-        ))}
+        {atalhos.map(({ rotulo, rota, Icone, disponivel }) => {
+          const cartaoConteudo = (
+            <GlassCard
+              data-testid={`dashboard-card-${rotulo.toLowerCase().replace(/\s+/g, '-')}`}
+              className={cardClasses(disponivel)}
+            >
+              <div className="flex items-center justify-between">
+                <Icone size={22} className="text-ink-muted" />
+                <Badge tom={disponivel ? 'success' : 'muted'}>{disponivel ? 'Disponível' : 'Em breve'}</Badge>
+              </div>
+              <span className="font-display font-semibold text-ink">{rotulo}</span>
+            </GlassCard>
+          )
+
+          return disponivel ? (
+            <Link key={rota} to={rota}>
+              {cartaoConteudo}
+            </Link>
+          ) : (
+            <div key={rota}>{cartaoConteudo}</div>
+          )
+        })}
       </div>
     </div>
   )
+}
+
+function cardClasses(disponivel: boolean) {
+  return `flex flex-col gap-3 p-5 transition-all duration-200 ${
+    disponivel ? 'hover:-translate-y-1 hover:border-neon-cyan/40' : 'opacity-70'
+  }`
 }

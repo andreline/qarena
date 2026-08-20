@@ -35,8 +35,24 @@ const secoes: SecaoRequisitos[] = [
       'Usuário sem permissão de acesso deve ver uma mensagem clara, nunca uma tela vazia',
     ],
   },
-  { id: 'loja', titulo: 'Loja', itens: null },
-  { id: 'carrinho', titulo: 'Carrinho', itens: null },
+  {
+    id: 'loja',
+    titulo: 'Loja',
+    itens: [
+      'A busca por produto deve funcionar independente de letras maiúsculas ou minúsculas',
+      'O filtro de categoria deve mostrar apenas produtos daquela categoria',
+      'Produtos sem estoque não devem poder ser adicionados ao carrinho',
+    ],
+  },
+  {
+    id: 'carrinho',
+    titulo: 'Carrinho',
+    itens: [
+      'A quantidade mínima de um item no carrinho deve ser 1, para remover use o botão de remover',
+      'O valor total do carrinho deve ser a soma de cada item multiplicado pela quantidade escolhida',
+      'O contador de itens do carrinho deve refletir corretamente o que está no carrinho, inclusive depois de remover um item',
+    ],
+  },
   { id: 'checkout', titulo: 'Cupom e Checkout', itens: null },
   { id: 'perfil', titulo: 'Perfil do Usuário', itens: null },
   { id: 'pedidos', titulo: 'Meus Pedidos', itens: null },

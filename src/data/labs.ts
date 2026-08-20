@@ -52,7 +52,7 @@ export const labs: Lab[] = [
     icone: Store,
     cor: 'magenta',
     bugs: 3,
-    disponivel: false,
+    disponivel: true,
   },
   {
     id: 'carrinho',
@@ -62,7 +62,7 @@ export const labs: Lab[] = [
     icone: ShoppingCart,
     cor: 'cyan',
     bugs: 3,
-    disponivel: false,
+    disponivel: true,
   },
   {
     id: 'checkout',

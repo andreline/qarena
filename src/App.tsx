@@ -9,6 +9,8 @@ import { Requisitos } from '@/pages/Requisitos'
 import { MassaDeDados } from '@/pages/MassaDeDados'
 import { Cursos } from '@/pages/Cursos'
 import { Dashboard } from '@/pages/Dashboard'
+import { Loja } from '@/pages/Loja'
+import { Carrinho } from '@/pages/Carrinho'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -30,8 +32,10 @@ export function App() {
       <Route element={<RotaProtegida />}>
         <Route element={<AppLayoutConectado />}>
           <Route path="/app" element={<Dashboard />} />
+          <Route path="/app/loja" element={<Loja />} />
+          <Route path="/app/carrinho" element={<Carrinho />} />
 
-          {/* Blocos seguintes: /app/loja, /app/carrinho, /app/checkout, /app/perfil, /app/pedidos */}
+          {/* Blocos seguintes: /app/checkout, /app/perfil, /app/pedidos */}
         </Route>
       </Route>
     </Routes>
