@@ -132,6 +132,14 @@ export function Cadastro() {
             />
           </div>
 
+          <p className="-mt-2 text-xs text-ink-muted/70">
+            Não quer usar o seu CPF de verdade?{' '}
+            <Link to="/massa-de-dados" className="text-neon-cyan hover:underline" data-testid="cadastro-link-gerador-cpf">
+              Gere um CPF fictício na Massa de Dados
+            </Link>
+            .
+          </p>
+
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
               label="Senha"

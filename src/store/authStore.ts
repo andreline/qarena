@@ -12,6 +12,7 @@ export interface Usuario {
   creditos: number
   bloqueado: boolean
   permissao: boolean
+  contaSuspensa: boolean
   criadoEm: string
 }
 
@@ -52,6 +53,7 @@ const usuariosSeed: Usuario[] = [
     creditos: 1000,
     bloqueado: false,
     permissao: true,
+    contaSuspensa: false,
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
   {
@@ -65,6 +67,7 @@ const usuariosSeed: Usuario[] = [
     creditos: 500,
     bloqueado: true,
     permissao: true,
+    contaSuspensa: false,
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
   {
@@ -78,6 +81,21 @@ const usuariosSeed: Usuario[] = [
     creditos: 500,
     bloqueado: false,
     permissao: false,
+    contaSuspensa: false,
+    criadoEm: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'seed-4',
+    nome: 'Usuário Suspenso',
+    email: 'usuario.suspenso@qazero.com',
+    cpf: '456.789.012-32',
+    telefone: '(11) 94567-8901',
+    senha: 'Qa@123456',
+    numeroConta: 'QA-0004',
+    creditos: 500,
+    bloqueado: false,
+    permissao: true,
+    contaSuspensa: true,
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
 ]
@@ -87,7 +105,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       usuarios: usuariosSeed,
       usuarioLogado: null,
-      proximoNumeroConta: 4,
+      proximoNumeroConta: 5,
 
       cadastrar: (dados) => {
         const estado = get()
@@ -104,6 +122,7 @@ export const useAuthStore = create<AuthState>()(
           creditos: dados.comCreditos ? 1000 : 0,
           bloqueado: false,
           permissao: true,
+          contaSuspensa: false,
           criadoEm: new Date().toISOString(),
         }
 
@@ -121,6 +140,7 @@ export const useAuthStore = create<AuthState>()(
 
         if (!usuario) return { sucesso: false, erro: 'Usuário não encontrado' }
         if (usuario.senha !== senha) return { sucesso: false, erro: 'Usuário não encontrado' }
+        if (usuario.contaSuspensa) return { sucesso: false, erro: 'Esta conta está suspensa e sem acesso ao sistema.' }
 
         set({ usuarioLogado: usuario })
         return { sucesso: true }

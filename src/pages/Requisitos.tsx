@@ -33,6 +33,7 @@ const secoes: SecaoRequisitos[] = [
       'O botão de entrar só deve ficar habilitado quando e-mail e senha estiverem preenchidos',
       'O formato do e-mail deve ser validado antes do envio do formulário',
       'Usuário sem permissão de acesso deve ver uma mensagem clara, nunca uma tela vazia',
+      'Uma conta suspensa deve ser barrada no login, com uma mensagem clara explicando o motivo',
     ],
   },
   {

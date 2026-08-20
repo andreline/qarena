@@ -42,6 +42,14 @@ const usuariosTeste: UsuarioTeste[] = [
     etiqueta: 'Sem permissão',
   },
   {
+    slug: 'suspenso',
+    descricao: 'Conta suspensa, login deve ser barrado com mensagem clara',
+    email: 'usuario.suspenso@qazero.com',
+    senha: 'Qa@123456',
+    tom: 'danger',
+    etiqueta: 'Suspenso',
+  },
+  {
     slug: 'invalido',
     descricao: 'Não existe, serve para testar erro',
     email: 'usuario.invalido@qazero.com',
