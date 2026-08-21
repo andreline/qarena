@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AlertTriangle, IdCard, RefreshCw, Wallet } from 'lucide-react'
+import { AlertTriangle, Download, IdCard, RefreshCw, Smartphone, Wallet } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -148,6 +148,32 @@ export function MassaDeDados() {
             </GlassCard>
           ))}
         </div>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">
+        <h2 className="text-center font-display text-xl font-semibold text-ink">App Android (APK)</h2>
+        <p className="mx-auto max-w-xl text-center text-sm text-ink-muted">
+          O mesmo QArena, empacotado como aplicativo Android de verdade. Ótimo para quem quer praticar automação
+          mobile com Appium, Maestro ou outra ferramenta.
+        </p>
+
+        <GlassCard className="mx-auto flex w-full flex-col items-center gap-4 p-6 text-center sm:flex-row sm:justify-between sm:text-left" data-testid="massa-dados-apk">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-neon-purple/30 bg-neon-purple/10 text-neon-purple">
+              <Smartphone size={20} />
+            </span>
+            <div>
+              <p className="font-display font-semibold text-ink">QArena.apk</p>
+              <p className="text-xs text-ink-muted">Ative "instalar de fontes desconhecidas" no Android para instalar</p>
+            </div>
+          </div>
+          <a href="/apk/QArena.apk" download="QArena.apk">
+            <Button variante="primary" tamanho="sm" data-testid="massa-dados-btn-baixar-apk">
+              <Download size={16} />
+              Baixar QArena.apk
+            </Button>
+          </a>
+        </GlassCard>
       </div>
 
       <div className="mx-auto flex w-full max-w-3xl items-start gap-3 rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-ink-muted">

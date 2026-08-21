@@ -132,10 +132,10 @@ export function Cadastro() {
             />
           </div>
 
-          <p className="-mt-2 text-xs text-ink-muted/70">
-            Não quer usar o seu CPF de verdade?{' '}
-            <Link to="/massa-de-dados" className="text-neon-cyan hover:underline" data-testid="cadastro-link-gerador-cpf">
-              Gere um CPF fictício na Massa de Dados
+          <p className="-mt-2 text-xs text-warning">
+            Não use o seu CPF de verdade! Gere um CPF fictício em{' '}
+            <Link to="/massa-de-dados" className="underline hover:text-warning/80" data-testid="cadastro-link-gerador-cpf">
+              Massa de Dados
             </Link>
             .
           </p>
