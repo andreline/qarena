@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">QArena</string>
+    <string name="title_activity_main">QArena</string>
+    <string name="package_name">com.qadozero.qarena</string>
+    <string name="custom_url_scheme">com.qadozero.qarena</string>
+</resources>
