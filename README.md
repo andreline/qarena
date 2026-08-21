@@ -6,7 +6,7 @@ Projeto educacional criado por [Andreline Lira](https://github.com/andreline), p
 
 Ambiente fictício. Todos os dados, produtos e pedidos são simulados para fins de estudo. Nunca use dados reais aqui.
 
-**Site publicado:** [qarena-kappa.vercel.app](https://qarena-kappa.vercel.app)
+**Site publicado:** [qarenaqa.vercel.app](https://qarenaqa.vercel.app)
 
 ## O que é
 
@@ -83,4 +83,4 @@ Todo elemento interativo do site tem um atributo `data-testid`, no padrão `{con
 
 ## Licença
 
-Distribuído sob a licença MIT. Veja [LICENSE](LICENSE) para mais detalhes.
+Todos os direitos reservados. Este código é aberto para visualização e fins de estudo, mas não está licenciado para cópia, redistribuição ou reuso, integral ou parcial, sem autorização prévia de [Andreline Lira](https://github.com/andreline).
