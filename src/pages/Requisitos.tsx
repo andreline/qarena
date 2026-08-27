@@ -128,6 +128,19 @@ const secoes: SecaoRequisitos[] = [
       'O painel resumo do topo deve atualizar imediatamente depois de qualquer edição',
     ],
   },
+  {
+    id: 'recuperacao-de-senha',
+    titulo: 'Recuperação de Senha',
+    itens: [
+      'A mensagem de retorno deve ser a mesma independentemente de o e-mail existir ou não na base',
+      'Um link de redefinição expirado não deve mais funcionar',
+      'Um link de redefinição só deve poder ser usado uma vez',
+      'Depois de redefinir a senha com sucesso, o login deve funcionar com a nova senha',
+      'A nova senha não deveria poder ser igual à senha antiga, sem nenhum aviso',
+      'A regra de senha mínima deve ser a mesma em todas as telas do site, inclusive na de cadastro',
+      'O campo de confirmar nova senha deve ser comparado com o campo de nova senha',
+    ],
+  },
 ]
 
 export function Requisitos() {

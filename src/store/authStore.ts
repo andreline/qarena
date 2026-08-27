@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { useEmailStore } from './emailStore'
+import { montarEmailRecuperacaoSenha, REMETENTE_QARENA } from '@/data/templatesEmail'
 
 export interface Pendencias {
   cpfConfirmado: boolean
@@ -49,10 +51,17 @@ export interface DadosRegularizacao {
   endereco: string
 }
 
+export interface TokenRecuperacao {
+  token: string
+  email: string
+  criadoEm: string
+}
+
 interface AuthState {
   usuarios: Usuario[]
   usuarioLogado: Usuario | null
   proximoNumeroConta: number
+  tokensRecuperacao: TokenRecuperacao[]
   cadastrar: (dados: DadosCadastro) => Usuario
   login: (email: string, senha: string) => ResultadoAuth
   logout: () => void
@@ -60,6 +69,9 @@ interface AuthState {
   debitarCreditos: (valor: number) => void
   regularizarCadastro: (dados: DadosRegularizacao) => void
   reativarConta: () => void
+  solicitarRecuperacaoSenha: (email: string) => { emailExiste: boolean }
+  buscarUsuarioPorToken: (token: string) => Usuario | undefined
+  redefinirSenha: (token: string, novaSenha: string) => ResultadoAuth
 }
 
 const usuariosSeed: Usuario[] = [
@@ -397,6 +409,7 @@ export const useAuthStore = create<AuthState>()(
       usuarios: usuariosSeed,
       usuarioLogado: null,
       proximoNumeroConta: 17,
+      tokensRecuperacao: [],
 
       cadastrar: (dados) => {
         const estado = get()
@@ -505,6 +518,44 @@ export const useAuthStore = create<AuthState>()(
           usuarioLogado: atualizado,
           usuarios: estado.usuarios.map((u) => (u.id === atualizado.id ? atualizado : u)),
         })
+      },
+
+      solicitarRecuperacaoSenha: (email) => {
+        const estado = get()
+        const usuario = estado.usuarios.find((u) => u.email === email)
+        if (!usuario) return { emailExiste: false }
+
+        const token = crypto.randomUUID()
+        const novoToken: TokenRecuperacao = { token, email, criadoEm: new Date().toISOString() }
+        set({ tokensRecuperacao: [...estado.tokensRecuperacao, novoToken] })
+
+        const link = `${window.location.origin}/redefinir-senha?token=${token}`
+        const { assunto, corpo } = montarEmailRecuperacaoSenha(usuario.nome, link)
+        useEmailStore.getState().criarEmail({
+          remetente: REMETENTE_QARENA,
+          destinatario: email,
+          assunto,
+          corpo,
+          tipo: 'recuperacao-senha',
+        })
+
+        return { emailExiste: true }
+      },
+
+      buscarUsuarioPorToken: (token) => {
+        const estado = get()
+        const registro = estado.tokensRecuperacao.find((t) => t.token === token)
+        if (!registro) return undefined
+        return estado.usuarios.find((u) => u.email === registro.email)
+      },
+
+      redefinirSenha: (token, _novaSenha) => {
+        const estado = get()
+        const registro = estado.tokensRecuperacao.find((t) => t.token === token)
+        if (!registro) return { sucesso: false, erro: 'Link inválido ou expirado.' }
+        const usuario = estado.usuarios.find((u) => u.email === registro.email)
+        if (!usuario) return { sucesso: false, erro: 'Link inválido ou expirado.' }
+        return { sucesso: true, usuario }
       },
     }),
     {

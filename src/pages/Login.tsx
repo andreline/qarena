@@ -82,16 +82,25 @@ export function Login() {
             placeholder="Sua senha"
           />
 
-          <label className="flex items-center gap-2 text-sm text-ink-muted">
-            <input
-              type="checkbox"
-              checked={lembrarMe}
-              onChange={(e) => setLembrarMe(e.target.checked)}
-              data-testid="login-checkbox-lembrar-me"
-              className="h-4 w-4 rounded border-white/20 bg-base-800/80 accent-neon-cyan"
-            />
-            Lembrar-me
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-sm text-ink-muted">
+              <input
+                type="checkbox"
+                checked={lembrarMe}
+                onChange={(e) => setLembrarMe(e.target.checked)}
+                data-testid="login-checkbox-lembrar-me"
+                className="h-4 w-4 rounded border-white/20 bg-base-800/80 accent-neon-cyan"
+              />
+              Lembrar-me
+            </label>
+            <Link
+              to="/esqueci-senha"
+              className="text-xs text-neon-cyan hover:underline"
+              data-testid="login-link-esqueci-senha"
+            >
+              Esqueci minha senha
+            </Link>
+          </div>
 
           {erros.geral && (
             <p data-testid="login-msg-erro-geral" className="text-sm text-danger">

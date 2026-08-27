@@ -390,6 +390,48 @@ export const bugs: Bug[] = [
     comportamentoEsperado: 'O painel resumo do topo deve atualizar imediatamente depois de qualquer edição.',
     comportamentoAtual: 'O painel resumo do topo não atualiza depois de uma edição, só depois de recarregar a página.',
   },
+  {
+    id: 'REC-01',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'A mensagem de retorno deve ser a mesma independentemente de o e-mail existir ou não na base.',
+    comportamentoAtual: 'Se o e-mail não existir, o sistema informa "E-mail não cadastrado", expondo quais e-mails existem na base.',
+  },
+  {
+    id: 'REC-02',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'Um link de redefinição expirado não deve mais funcionar.',
+    comportamentoAtual: 'O link de redefinição continua funcionando normalmente mesmo depois de expirado.',
+  },
+  {
+    id: 'REC-03',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'Um link de redefinição só deve poder ser usado uma vez.',
+    comportamentoAtual: 'O mesmo link pode ser usado várias vezes para trocar a senha.',
+  },
+  {
+    id: 'REC-04',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'Depois de redefinir a senha com sucesso, o login deve funcionar com a nova senha.',
+    comportamentoAtual: 'A nova senha é aceita e mostra sucesso, mas o login continua funcionando só com a senha antiga.',
+  },
+  {
+    id: 'REC-05',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'A nova senha não deveria poder ser igual à senha antiga, sem nenhum aviso.',
+    comportamentoAtual: 'A nova senha pode ser igual à antiga, sem nenhum aviso.',
+  },
+  {
+    id: 'REC-06',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'A regra de senha mínima deve ser a mesma em todas as telas do site, inclusive na de cadastro.',
+    comportamentoAtual: 'A regra de força de senha aqui é diferente da regra usada na tela de cadastro.',
+  },
+  {
+    id: 'REC-07',
+    tela: 'Recuperação de Senha',
+    comportamentoEsperado: 'O campo de confirmar nova senha deve ser comparado com o campo de nova senha.',
+    comportamentoAtual: 'O campo de confirmar nova senha não é comparado com o campo de nova senha.',
+  },
 ]
 
 export const totalBugsCatalogados = bugs.length

@@ -22,6 +22,8 @@ import { MeusPedidos } from '@/pages/MeusPedidos'
 import { RegularizacaoCadastro } from '@/pages/RegularizacaoCadastro'
 import { ContaInativa } from '@/pages/ContaInativa'
 import { AdminProdutos } from '@/pages/AdminProdutos'
+import { EsqueciSenha } from '@/pages/EsqueciSenha'
+import { RedefinirSenha } from '@/pages/RedefinirSenha'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -31,6 +33,8 @@ export function App() {
         <Route path="/" element={<Home />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+        <Route path="/redefinir-senha" element={<RedefinirSenha />} />
         <Route path="/requisitos" element={<Requisitos />} />
         <Route path="/massa-de-dados" element={<MassaDeDados />} />
         <Route path="/cursos" element={<Cursos />} />
