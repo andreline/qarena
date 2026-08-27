@@ -19,7 +19,7 @@ interface UsuarioTeste {
   descricao: string
   email: string
   senha: string
-  tom: 'success' | 'danger' | 'purple' | 'muted'
+  tom: 'success' | 'danger' | 'purple' | 'muted' | 'warning' | 'cyan'
   etiqueta: string
 }
 
@@ -63,6 +63,38 @@ const usuariosTeste: UsuarioTeste[] = [
     senha: 'qualquer',
     tom: 'muted',
     etiqueta: 'Inválido',
+  },
+  {
+    slug: 'pendente',
+    descricao: 'Cadastro com dados pendentes de confirmação',
+    email: 'usuario.pendente@qazero.com',
+    senha: 'Qa@123456',
+    tom: 'warning',
+    etiqueta: 'Cadastro pendente',
+  },
+  {
+    slug: 'admin',
+    descricao: 'Acesso à área administrativa',
+    email: 'admin@qazero.com',
+    senha: 'Qa@123456',
+    tom: 'cyan',
+    etiqueta: 'Administrador',
+  },
+  {
+    slug: 'inativo',
+    descricao: 'Conta inativa há um bom tempo',
+    email: 'usuario.inativo@qazero.com',
+    senha: 'Qa@123456',
+    tom: 'muted',
+    etiqueta: 'Inativo',
+  },
+  {
+    slug: 'primeiroacesso',
+    descricao: 'Login de conta que nunca acessou o sistema',
+    email: 'usuario.primeiroacesso@qazero.com',
+    senha: 'Qa@123456',
+    tom: 'purple',
+    etiqueta: 'Primeiro acesso',
   },
 ]
 

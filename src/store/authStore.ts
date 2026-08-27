@@ -1,18 +1,30 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export interface Pendencias {
+  cpfConfirmado: boolean
+  telefoneConfirmado: boolean
+  enderecoCadastrado: boolean
+}
+
 export interface Usuario {
   id: string
   nome: string
   email: string
   cpf: string
   telefone: string
+  endereco: string
   senha: string
   numeroConta: string
   creditos: number
   bloqueado: boolean
   permissao: boolean
   contaSuspensa: boolean
+  admin: boolean
+  cadastroPendente: boolean
+  inativo: boolean
+  primeiroAcesso: boolean
+  pendencias: Pendencias
   criadoEm: string
 }
 
@@ -28,6 +40,13 @@ export interface DadosCadastro {
 export interface ResultadoAuth {
   sucesso: boolean
   erro?: string
+  usuario?: Usuario
+}
+
+export interface DadosRegularizacao {
+  cpf: string
+  telefone: string
+  endereco: string
 }
 
 interface AuthState {
@@ -39,6 +58,8 @@ interface AuthState {
   logout: () => void
   atualizarPerfil: (dados: Partial<Usuario>) => void
   debitarCreditos: (valor: number) => void
+  regularizarCadastro: (dados: DadosRegularizacao) => void
+  reativarConta: () => void
 }
 
 const usuariosSeed: Usuario[] = [
@@ -48,12 +69,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.sucesso@qazero.com',
     cpf: '123.456.789-09',
     telefone: '(11) 91234-5678',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0001',
     creditos: 1000,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
   {
@@ -62,12 +89,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.bloqueado@qazero.com',
     cpf: '234.567.890-10',
     telefone: '(11) 92345-6789',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0002',
     creditos: 500,
     bloqueado: true,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
   {
@@ -76,12 +109,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.sempermissao@qazero.com',
     cpf: '345.678.901-21',
     telefone: '(11) 93456-7890',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0003',
     creditos: 500,
     bloqueado: false,
     permissao: false,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
   {
@@ -90,12 +129,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.suspenso@qazero.com',
     cpf: '456.789.012-32',
     telefone: '(11) 94567-8901',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0004',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: true,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2026-01-01T00:00:00.000Z',
   },
   {
@@ -104,12 +149,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.nomelongo@qazero.com',
     cpf: '567.890.123-43',
     telefone: '(11) 95678-9012',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0005',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-09-14T00:00:00.000Z',
   },
   {
@@ -118,12 +169,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.acentos@qazero.com',
     cpf: '678.901.234-54',
     telefone: '(11) 96789-0123',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0006',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-10-02T00:00:00.000Z',
   },
   {
@@ -132,12 +189,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.nomecurto@qazero.com',
     cpf: '789.012.345-65',
     telefone: '(11) 97890-1234',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0007',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-10-20T00:00:00.000Z',
   },
   {
@@ -146,12 +209,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.semtelefone@qazero.com',
     cpf: '890.123.456-76',
     telefone: '',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0008',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-11-05T00:00:00.000Z',
   },
   {
@@ -160,12 +229,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.semsaldo@qazero.com',
     cpf: '901.234.567-87',
     telefone: '(11) 99012-3456',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0009',
     creditos: 0,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-11-22T00:00:00.000Z',
   },
   {
@@ -174,12 +249,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.sempedidos@qazero.com',
     cpf: '012.345.678-98',
     telefone: '(11) 90123-4567',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0010',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-12-10T00:00:00.000Z',
   },
   {
@@ -188,12 +269,18 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.commuitospedidos@qazero.com',
     cpf: '123.456.780-19',
     telefone: '(11) 91234-0987',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0011',
     creditos: 800,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2025-08-01T00:00:00.000Z',
   },
   {
@@ -202,13 +289,99 @@ const usuariosSeed: Usuario[] = [
     email: 'usuario.completo@qazero.com',
     cpf: '234.567.801-20',
     telefone: '(11) 92345-1098',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
     senha: 'Qa@123456',
     numeroConta: 'QA-0012',
     creditos: 500,
     bloqueado: false,
     permissao: true,
     contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
     criadoEm: '2026-01-15T00:00:00.000Z',
+  },
+  {
+    id: 'seed-13',
+    nome: 'Usuário Pendente',
+    email: 'usuario.pendente@qazero.com',
+    cpf: '',
+    telefone: '',
+    endereco: '',
+    senha: 'Qa@123456',
+    numeroConta: 'QA-0013',
+    creditos: 500,
+    bloqueado: false,
+    permissao: true,
+    contaSuspensa: false,
+    admin: false,
+    cadastroPendente: true,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: false, telefoneConfirmado: false, enderecoCadastrado: false },
+    criadoEm: '2026-06-10T00:00:00.000Z',
+  },
+  {
+    id: 'seed-14',
+    nome: 'Administradora QArena',
+    email: 'admin@qazero.com',
+    cpf: '345.678.912-31',
+    telefone: '(11) 93456-2109',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
+    senha: 'Qa@123456',
+    numeroConta: 'QA-0014',
+    creditos: 500,
+    bloqueado: false,
+    permissao: true,
+    contaSuspensa: false,
+    admin: true,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
+    criadoEm: '2025-06-01T00:00:00.000Z',
+  },
+  {
+    id: 'seed-15',
+    nome: 'Usuário Inativo',
+    email: 'usuario.inativo@qazero.com',
+    cpf: '456.789.123-42',
+    telefone: '(11) 94567-3210',
+    endereco: 'Rua Fictícia, 100, São Paulo - SP',
+    senha: 'Qa@123456',
+    numeroConta: 'QA-0015',
+    creditos: 500,
+    bloqueado: false,
+    permissao: true,
+    contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: true,
+    primeiroAcesso: false,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
+    criadoEm: '2024-08-20T00:00:00.000Z',
+  },
+  {
+    id: 'seed-16',
+    nome: 'Usuário Primeiro Acesso',
+    email: 'usuario.primeiroacesso@qazero.com',
+    cpf: '567.891.234-53',
+    telefone: '(11) 95678-4321',
+    endereco: '',
+    senha: 'Qa@123456',
+    numeroConta: 'QA-0016',
+    creditos: 500,
+    bloqueado: false,
+    permissao: true,
+    contaSuspensa: false,
+    admin: false,
+    cadastroPendente: false,
+    inativo: false,
+    primeiroAcesso: true,
+    pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: false },
+    criadoEm: '2026-08-20T00:00:00.000Z',
   },
 ]
 
@@ -217,7 +390,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       usuarios: usuariosSeed,
       usuarioLogado: null,
-      proximoNumeroConta: 13,
+      proximoNumeroConta: 17,
 
       cadastrar: (dados) => {
         const estado = get()
@@ -229,12 +402,18 @@ export const useAuthStore = create<AuthState>()(
           email: dados.email,
           cpf: dados.cpf,
           telefone: dados.telefone,
+          endereco: '',
           senha: dados.senha,
           numeroConta,
           creditos: dados.comCreditos ? 1000 : 0,
           bloqueado: false,
           permissao: true,
           contaSuspensa: false,
+          admin: false,
+          cadastroPendente: false,
+          inativo: false,
+          primeiroAcesso: false,
+          pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
           criadoEm: new Date().toISOString(),
         }
 
@@ -255,7 +434,7 @@ export const useAuthStore = create<AuthState>()(
         if (usuario.contaSuspensa) return { sucesso: false, erro: 'Esta conta está suspensa e sem acesso ao sistema.' }
 
         set({ usuarioLogado: usuario })
-        return { sucesso: true }
+        return { sucesso: true, usuario }
       },
 
       logout: () => set({ usuarioLogado: null }),
@@ -274,6 +453,32 @@ export const useAuthStore = create<AuthState>()(
         const estado = get()
         if (!estado.usuarioLogado) return
         const atualizado = { ...estado.usuarioLogado, creditos: estado.usuarioLogado.creditos - valor }
+        set({
+          usuarioLogado: atualizado,
+          usuarios: estado.usuarios.map((u) => (u.id === atualizado.id ? atualizado : u)),
+        })
+      },
+
+      regularizarCadastro: (dados) => {
+        const estado = get()
+        if (!estado.usuarioLogado) return
+        const atualizado: Usuario = {
+          ...estado.usuarioLogado,
+          cpf: dados.cpf,
+          telefone: dados.telefone,
+          endereco: dados.endereco,
+          pendencias: { cpfConfirmado: true, telefoneConfirmado: true, enderecoCadastrado: true },
+        }
+        set({
+          usuarioLogado: atualizado,
+          usuarios: estado.usuarios.map((u) => (u.id === atualizado.id ? atualizado : u)),
+        })
+      },
+
+      reativarConta: () => {
+        const estado = get()
+        if (!estado.usuarioLogado) return
+        const atualizado = { ...estado.usuarioLogado, inativo: false }
         set({
           usuarioLogado: atualizado,
           usuarios: estado.usuarios.map((u) => (u.id === atualizado.id ? atualizado : u)),

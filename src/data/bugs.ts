@@ -85,6 +85,30 @@ export const bugs: Bug[] = [
     comportamentoAtual: 'Usuário sem permissão entra e vê uma tela em branco, sem nenhuma mensagem.',
   },
   {
+    id: 'LOG-07',
+    tela: 'Login',
+    comportamentoEsperado: 'Uma conta em primeiro acesso deve ser obrigada a trocar a senha antes de continuar usando o sistema.',
+    comportamentoAtual: 'O sistema pula essa exigência e leva direto para o dashboard.',
+  },
+  {
+    id: 'REG-01',
+    tela: 'Login',
+    comportamentoEsperado: 'Um cadastro pendente de regularização não deve dar acesso ao restante do sistema até ser regularizado.',
+    comportamentoAtual: 'Existe um botão discreto que dá acesso total sem regularizar o cadastro.',
+  },
+  {
+    id: 'REG-02',
+    tela: 'Login',
+    comportamentoEsperado: 'Depois de regularizar o cadastro, o status pendente não deve voltar a aparecer nos próximos logins.',
+    comportamentoAtual: 'Depois de regularizar, o status não muda e a tela volta a aparecer no próximo login.',
+  },
+  {
+    id: 'REG-03',
+    tela: 'Login',
+    comportamentoEsperado: 'Um cadastro pendente de regularização não deve conseguir finalizar compras acessando rotas diretamente pela URL.',
+    comportamentoAtual: 'O usuário pendente consegue finalizar uma compra digitando a URL do checkout direto.',
+  },
+  {
     id: 'SES-01',
     tela: 'Login',
     comportamentoEsperado: 'Depois de sair da conta, o botão voltar do navegador não deve mostrar uma tela autenticada.',

@@ -40,6 +40,17 @@ export function Login() {
     }
 
     setErros({})
+
+    if (resultado.usuario?.cadastroPendente) {
+      navigate('/regularizacao', { replace: true })
+      return
+    }
+
+    if (resultado.usuario?.inativo) {
+      navigate('/conta-inativa', { replace: true })
+      return
+    }
+
     const estadoRota = location.state as { de?: string } | null
     navigate(estadoRota?.de ?? '/app', { replace: true })
   }

@@ -37,6 +37,10 @@ const secoes: SecaoRequisitos[] = [
       'Uma conta suspensa deve ser barrada no login, com uma mensagem clara explicando o motivo',
       'Depois de sair da conta, voltar no navegador não deve mostrar novamente uma tela autenticada',
       'A opção "Lembrar-me" deve realmente manter a sessão ativa por mais tempo quando marcada',
+      'Uma conta em primeiro acesso deve ser obrigada a trocar a senha antes de continuar usando o sistema',
+      'Um cadastro pendente de regularização não deve dar acesso ao restante do sistema até ser regularizado',
+      'Depois de regularizar o cadastro, o status pendente não deve voltar a aparecer nos próximos logins',
+      'Um cadastro pendente de regularização não deve conseguir finalizar compras acessando rotas diretamente pela URL',
     ],
   },
   {

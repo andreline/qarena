@@ -19,6 +19,8 @@ import { Carrinho } from '@/pages/Carrinho'
 import { Checkout } from '@/pages/Checkout'
 import { Perfil } from '@/pages/Perfil'
 import { MeusPedidos } from '@/pages/MeusPedidos'
+import { RegularizacaoCadastro } from '@/pages/RegularizacaoCadastro'
+import { ContaInativa } from '@/pages/ContaInativa'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -48,6 +50,8 @@ export function App() {
           <Route path="/app/checkout" element={<Checkout />} />
           <Route path="/app/perfil" element={<Perfil />} />
           <Route path="/app/pedidos" element={<MeusPedidos />} />
+          <Route path="/regularizacao" element={<RegularizacaoCadastro />} />
+          <Route path="/conta-inativa" element={<ContaInativa />} />
         </Route>
       </Route>
     </Routes>
