@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { cn } from '@/lib/utils'
-import { produtos, categorias, type Produto, type CorProduto } from '@/data/produtos'
+import { categorias, type Produto, type CorProduto } from '@/data/produtos'
 import { useCarrinhoStore } from '@/store/carrinhoStore'
+import { useCatalogoProdutos } from '@/store/catalogoAdminStore'
 
 const PRODUTOS_POR_PAGINA = 20
 
@@ -25,8 +26,29 @@ const classesPorCor: Record<CorProduto, string> = {
   magenta: 'text-neon-magenta bg-neon-magenta/10 border-neon-magenta/30',
 }
 
-function produtoCombina(produto: Produto, categoriaAtiva: string, termoBusca: string): boolean {
-  const combinaCategoria = categoriaAtiva === 'Todos' || produto.id === categoriaAtiva
+const PRODUTO_DUPLICADO_ID = 'adesivo-status-200'
+
+function produtoNaCategoria(produto: Produto, categoria: string): boolean {
+  if (categoria === 'Todos') return true
+  if (categoria === 'Acessórios') return false
+  if (categoria === 'Canecas') return produto.categoria === 'Canecas' || produto.categoria === 'Papelaria'
+  if (categoria === 'Papelaria') return produto.categoria === 'Papelaria' || produto.id === PRODUTO_DUPLICADO_ID
+  return produto.categoria === categoria
+}
+
+function produtoCombinaCategoria(produto: Produto, categoriaAtiva: string, categoriaAnterior: string): boolean {
+  const combinaAtual = produtoNaCategoria(produto, categoriaAtiva)
+  if (categoriaAnterior === 'Todos' || categoriaAnterior === categoriaAtiva) return combinaAtual
+  return combinaAtual && produtoNaCategoria(produto, categoriaAnterior)
+}
+
+function produtoCombina(
+  produto: Produto,
+  categoriaAtiva: string,
+  categoriaAnterior: string,
+  termoBusca: string,
+): boolean {
+  const combinaCategoria = produtoCombinaCategoria(produto, categoriaAtiva, categoriaAnterior)
   const combinaBusca = produto.nome.startsWith(termoBusca)
   return combinaCategoria && combinaBusca
 }
@@ -36,7 +58,9 @@ function formatarPrecoQuebrado(valor: number): string {
 }
 
 export function Loja() {
+  const produtos = useCatalogoProdutos()
   const [categoriaAtiva, setCategoriaAtiva] = useState('Todos')
+  const [categoriaAnterior, setCategoriaAnterior] = useState('Todos')
   const [termoBusca, setTermoBusca] = useState('')
   const [ordenacao, setOrdenacao] = useState<OpcaoOrdenacao>('relevancia')
   const [pagina, setPagina] = useState(1)
@@ -44,7 +68,9 @@ export function Loja() {
   const adicionar = useCarrinhoStore((estado) => estado.adicionar)
   const { mostrarToast } = useToast()
 
-  const produtosFiltrados = produtos.filter((produto) => produtoCombina(produto, categoriaAtiva, termoBusca))
+  const produtosFiltrados = produtos
+    .filter((produto) => produto.ativo)
+    .filter((produto) => produtoCombina(produto, categoriaAtiva, categoriaAnterior, termoBusca))
 
   const produtosOrdenados = [...produtosFiltrados].sort((a, b) => {
     if (ordenacao === 'menor-preco') return String(a.preco).localeCompare(String(b.preco))
@@ -57,6 +83,7 @@ export function Loja() {
   const produtosDaPagina = produtosOrdenados.slice((pagina - 1) * PRODUTOS_POR_PAGINA, pagina * PRODUTOS_POR_PAGINA)
 
   function aoTrocarCategoria(categoria: string) {
+    setCategoriaAnterior(categoriaAtiva)
     setCategoriaAtiva(categoria)
     setCategoriasClicadas((atual) => [...atual, categoria])
     setPagina(1)

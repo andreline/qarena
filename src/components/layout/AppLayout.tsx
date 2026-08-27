@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom'
-import { Store, ShoppingCart, User, Package, LogOut } from 'lucide-react'
+import { Store, ShoppingCart, User, Package, LogOut, ShieldCheck } from 'lucide-react'
 import { Footer } from './Footer'
 import { useCarrinhoStore } from '@/store/carrinhoStore'
 
@@ -7,6 +7,7 @@ interface AppLayoutProps {
   nome: string
   numeroConta: string
   creditos: number
+  admin: boolean
   aoSair: () => void
 }
 
@@ -17,7 +18,7 @@ const atalhos = [
   { rotulo: 'Meus Pedidos', rota: '/app/pedidos', Icone: Package },
 ]
 
-export function AppLayout({ nome, numeroConta, creditos, aoSair }: AppLayoutProps) {
+export function AppLayout({ nome, numeroConta, creditos, admin, aoSair }: AppLayoutProps) {
   const quantidadeCarrinho = useCarrinhoStore((estado) => estado.quantidadeTotal)
 
   return (
@@ -71,6 +72,16 @@ export function AppLayout({ nome, numeroConta, creditos, aoSair }: AppLayoutProp
               )}
             </Link>
           ))}
+          {admin && (
+            <Link
+              to="/admin"
+              data-testid="app-sidebar-link-administracao"
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium text-neon-purple transition-colors hover:bg-neon-purple/10"
+            >
+              <ShieldCheck size={18} />
+              Administração
+            </Link>
+          )}
         </nav>
 
         <button

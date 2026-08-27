@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'
 import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Button } from '@/components/ui/Button'
-import { produtos } from '@/data/produtos'
 import { useCarrinhoStore } from '@/store/carrinhoStore'
+import { useCatalogoProdutos } from '@/store/catalogoAdminStore'
 
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
 export function Carrinho() {
+  const produtos = useCatalogoProdutos()
   const itens = useCarrinhoStore((estado) => estado.itens)
   const atualizarQuantidade = useCarrinhoStore((estado) => estado.atualizarQuantidade)
   const remover = useCarrinhoStore((estado) => estado.remover)

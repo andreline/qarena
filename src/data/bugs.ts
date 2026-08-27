@@ -127,10 +127,28 @@ export const bugs: Bug[] = [
     comportamentoAtual: 'Produtos esgotados são adicionados ao carrinho normalmente.',
   },
   {
-    id: 'LOJ-02',
+    id: 'CAT-01',
     tela: 'Loja',
-    comportamentoEsperado: 'O filtro de categoria deve mostrar apenas produtos daquela categoria.',
-    comportamentoAtual: 'Selecionar uma categoria específica não mostra nenhum produto.',
+    comportamentoEsperado: 'A categoria "Canecas" deve mostrar apenas produtos da categoria Canecas.',
+    comportamentoAtual: 'A categoria "Canecas" também retorna produtos de outra categoria.',
+  },
+  {
+    id: 'CAT-02',
+    tela: 'Loja',
+    comportamentoEsperado: 'A categoria "Acessórios" deve mostrar os produtos que existem nela.',
+    comportamentoAtual: 'A categoria "Acessórios" mostra lista vazia, mesmo existindo produtos nela.',
+  },
+  {
+    id: 'CAT-03',
+    tela: 'Loja',
+    comportamentoEsperado: 'Cada produto deve aparecer em apenas uma categoria.',
+    comportamentoAtual: 'Um mesmo produto aparece em duas categorias diferentes.',
+  },
+  {
+    id: 'CAT-04',
+    tela: 'Loja',
+    comportamentoEsperado: 'Trocar de categoria deve substituir completamente o filtro anterior.',
+    comportamentoAtual: 'Ao trocar de categoria, o filtro anterior continua aplicado por baixo.',
   },
   {
     id: 'LOJ-03',
@@ -323,6 +341,54 @@ export const bugs: Bug[] = [
     tela: 'Massa de Dados',
     comportamentoEsperado: 'As datas devem ser exibidas no formato brasileiro (dia/mês/ano) em todas as telas.',
     comportamentoAtual: 'A data de validade dos cupons aparece no formato americano (mês/dia/ano), diferente do resto do site.',
+  },
+  {
+    id: 'ADM-01',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'Uma edição feita pelo administrador deve refletir para todos os usuários do sistema.',
+    comportamentoAtual: 'A edição feita pelo administrador só aparece para a própria conta do administrador.',
+  },
+  {
+    id: 'ADM-02',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'O campo de preço não deve aceitar valores negativos.',
+    comportamentoAtual: 'O campo de preço aceita valor negativo e salva sem reclamar.',
+  },
+  {
+    id: 'ADM-03',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'Marcar um produto como fora de estoque deve remover o item do carrinho de quem já tinha adicionado.',
+    comportamentoAtual: 'Marcar produto como fora de estoque não remove o item do carrinho de quem já tinha adicionado.',
+  },
+  {
+    id: 'ADM-04',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'Uma URL de imagem inválida deve ser validada, ou o card deve ter uma imagem alternativa quando a imagem falha.',
+    comportamentoAtual: 'URL de imagem inválida é salva sem validação e o card fica quebrado, sem imagem alternativa.',
+  },
+  {
+    id: 'ADM-05',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'O campo de estoque deve aceitar apenas números.',
+    comportamentoAtual: 'O campo de estoque aceita texto além de número.',
+  },
+  {
+    id: 'ADM-06',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'Somente usuários com perfil de administrador devem conseguir acessar a área administrativa, inclusive por acesso direto pela URL.',
+    comportamentoAtual: 'Usuário comum consegue acessar a área administrativa digitando a URL direto no navegador.',
+  },
+  {
+    id: 'ADM-07',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'Excluir um produto pela listagem deve pedir confirmação antes de excluir de verdade.',
+    comportamentoAtual: 'Excluir um produto não pede confirmação quando feito pelo botão da listagem.',
+  },
+  {
+    id: 'ADM-08',
+    tela: 'Área Administrativa',
+    comportamentoEsperado: 'O painel resumo do topo deve atualizar imediatamente depois de qualquer edição.',
+    comportamentoAtual: 'O painel resumo do topo não atualiza depois de uma edição, só depois de recarregar a página.',
   },
 ]
 

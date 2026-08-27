@@ -13,6 +13,12 @@ export function AppLayoutConectado() {
   }
 
   return (
-    <AppLayout nome={usuario.nome} numeroConta={usuario.numeroConta} creditos={usuario.creditos} aoSair={aoSair} />
+    <AppLayout
+      nome={usuario.nome}
+      numeroConta={usuario.numeroConta}
+      creditos={usuario.creditos}
+      admin={usuario.admin}
+      aoSair={aoSair}
+    />
   )
 }

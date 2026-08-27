@@ -48,7 +48,8 @@ const secoes: SecaoRequisitos[] = [
     titulo: 'Loja',
     itens: [
       'A busca por produto deve funcionar independente de letras maiúsculas ou minúsculas',
-      'O filtro de categoria deve mostrar apenas produtos daquela categoria',
+      'Cada categoria deve mostrar somente os produtos que pertencem a ela, sem faltar nem duplicar',
+      'Trocar de categoria deve substituir completamente o filtro anterior, não somar com ele',
       'Produtos sem estoque não devem poder ser adicionados ao carrinho',
       'A busca deve encontrar produtos que contenham o termo digitado em qualquer parte do nome, não só no início',
       'A busca deve funcionar independente de acentuação',
@@ -111,6 +112,20 @@ const secoes: SecaoRequisitos[] = [
     titulo: 'Massa de Dados',
     itens: [
       'As datas devem ser exibidas no formato brasileiro (dia/mês/ano) em todas as telas do site',
+    ],
+  },
+  {
+    id: 'area-administrativa',
+    titulo: 'Área Administrativa',
+    itens: [
+      'Somente usuários com perfil de administrador devem conseguir acessar a área administrativa, inclusive por acesso direto pela URL',
+      'Uma edição feita pelo administrador deve refletir para todos os usuários do sistema',
+      'O campo de preço não deve aceitar valores negativos',
+      'O campo de estoque deve aceitar apenas números',
+      'Uma URL de imagem inválida deve ser validada, ou o card deve ter uma imagem alternativa quando a imagem falha',
+      'Marcar um produto como fora de estoque deve remover o item do carrinho de quem já tinha adicionado',
+      'Excluir um produto pela listagem deve pedir confirmação antes de excluir de verdade',
+      'O painel resumo do topo deve atualizar imediatamente depois de qualquer edição',
     ],
   },
 ]

@@ -5,11 +5,11 @@ import { GlassCard } from '@/components/ui/GlassCard'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Badge } from '@/components/ui/Badge'
-import { produtos } from '@/data/produtos'
 import { cupons, type Cupom } from '@/data/cupons'
 import { useCarrinhoStore } from '@/store/carrinhoStore'
 import { useAuthStore } from '@/store/authStore'
 import { usePedidosStore } from '@/store/pedidosStore'
+import { useCatalogoProdutos } from '@/store/catalogoAdminStore'
 
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -19,6 +19,7 @@ function rotuloCupom(cupom: Cupom): string {
 }
 
 export function Checkout() {
+  const produtos = useCatalogoProdutos()
   const itensCarrinho = useCarrinhoStore((estado) => estado.itens)
   const limparCarrinho = useCarrinhoStore((estado) => estado.limpar)
   const usuario = useAuthStore((estado) => estado.usuarioLogado)

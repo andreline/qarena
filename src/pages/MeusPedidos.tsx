@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Package } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import { produtos } from '@/data/produtos'
 import { useAuthStore } from '@/store/authStore'
 import { usePedidosStore, type StatusPedido } from '@/store/pedidosStore'
+import { useCatalogoProdutos } from '@/store/catalogoAdminStore'
 import { cn } from '@/lib/utils'
 
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -40,6 +40,7 @@ function slugStatus(status: string): string {
 }
 
 export function MeusPedidos() {
+  const produtos = useCatalogoProdutos()
   const usuario = useAuthStore((estado) => estado.usuarioLogado)
   const pedidos = usePedidosStore((estado) => estado.pedidos)
   const [filtroStatus, setFiltroStatus] = useState<StatusPedido | 'Todos'>('Todos')
