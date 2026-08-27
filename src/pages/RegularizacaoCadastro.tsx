@@ -72,6 +72,17 @@ export function RegularizacaoCadastro() {
               placeholder="000.000.000-00"
               inputMode="numeric"
             />
+            <p className="-mt-2 text-xs text-warning">
+              Não use o seu CPF de verdade! Gere um CPF fictício em{' '}
+              <Link
+                to="/massa-de-dados"
+                className="underline hover:text-warning/80"
+                data-testid="regularizacao-link-gerador-cpf"
+              >
+                Massa de Dados
+              </Link>
+              .
+            </p>
             <Input
               label="Telefone"
               data-testid="regularizacao-input-telefone"
