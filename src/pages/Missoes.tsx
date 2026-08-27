@@ -1,9 +1,16 @@
-import { Check, Target } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Check, ChevronRight, Target } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import { missoes } from '@/data/missoes'
+import { missoes, type NivelMissao } from '@/data/missoes'
 import { useMissoesStore } from '@/store/missoesStore'
 import { cn } from '@/lib/utils'
+
+const corPorNivel: Record<NivelMissao, 'success' | 'warning' | 'danger'> = {
+  Fácil: 'success',
+  Médio: 'warning',
+  Difícil: 'danger',
+}
 
 export function Missoes() {
   const concluidas = useMissoesStore((estado) => estado.concluidas)
@@ -51,13 +58,17 @@ export function Missoes() {
                 <Check size={14} />
               </button>
 
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center gap-2">
-                  <h2 className="font-display font-semibold text-ink">{missao.titulo}</h2>
-                  <Badge tom="muted">{missao.tela}</Badge>
+              <Link to={`/missoes/${missao.id}`} className="flex flex-1 items-center justify-between gap-3" data-testid={`missoes-link-${missao.id}`}>
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="font-display font-semibold text-ink">{missao.titulo}</h2>
+                    <Badge tom="muted">{missao.tela}</Badge>
+                    <Badge tom={corPorNivel[missao.nivel]}>{missao.nivel}</Badge>
+                  </div>
+                  <p className="text-sm text-ink-muted">{missao.desafio}</p>
                 </div>
-                <p className="text-sm text-ink-muted">{missao.desafio}</p>
-              </div>
+                <ChevronRight size={20} className="shrink-0 text-ink-muted" />
+              </Link>
             </GlassCard>
           )
         })}

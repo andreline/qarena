@@ -1,7 +1,7 @@
+import { Link } from 'react-router-dom'
 import { BookOpen, ClipboardCheck, Download, FileSpreadsheet, FileText, Search, UserPlus } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Button } from '@/components/ui/Button'
-import { BotaoCopiar } from '@/components/ui/BotaoCopiar'
 
 const passos = [
   {
@@ -25,31 +25,10 @@ const passos = [
   {
     numero: '04',
     titulo: 'Documente o que encontrar',
-    descricao: 'Escreva um bug report para cada problema encontrado. Use o modelo abaixo se quiser um ponto de partida.',
+    descricao: 'Escreva um bug report para cada problema encontrado. Tem um modelo pronto (e um exemplo preenchido) na página de Bug Report.',
     Icone: ClipboardCheck,
   },
 ]
-
-const templateBugReport = `## Título do bug
-
-
-**Tela:**
-
-**Passos para reproduzir:**
-1.
-2.
-3.
-
-**Resultado esperado:**
-
-
-**Resultado atual:**
-
-
-**Severidade:** (crítica / alta / média / baixa)
-
-**Ambiente:** QArena (ambiente de treino)
-`
 
 const modelos = [
   {
@@ -95,19 +74,20 @@ export function Instrucoes() {
         ))}
       </div>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <FileText size={20} className="text-neon-purple" />
-            <h2 className="font-display text-xl font-semibold text-ink">Modelo de bug report</h2>
+      <GlassCard className="mx-auto flex w-full max-w-3xl flex-col items-center gap-3 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="flex items-center gap-3">
+          <FileText size={22} className="shrink-0 text-neon-purple" />
+          <div>
+            <h2 className="font-display font-semibold text-ink">Modelo de bug report</h2>
+            <p className="text-sm text-ink-muted">Template em branco, pronto para copiar, mais um exemplo preenchido.</p>
           </div>
-          <BotaoCopiar valor={templateBugReport} testId="instrucoes-btn-copiar-template" rotulo="Copiar modelo" />
         </div>
-
-        <GlassCard className="p-6" data-testid="instrucoes-template-bug-report">
-          <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-sm text-ink-muted">{templateBugReport}</pre>
-        </GlassCard>
-      </div>
+        <Link to="/bug-report">
+          <Button variante="secondary" tamanho="sm" data-testid="instrucoes-link-bug-report">
+            Ver modelo de bug report
+          </Button>
+        </Link>
+      </GlassCard>
 
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
         <div className="flex items-center gap-2">

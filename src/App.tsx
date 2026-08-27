@@ -10,6 +10,8 @@ import { MassaDeDados } from '@/pages/MassaDeDados'
 import { Cursos } from '@/pages/Cursos'
 import { Instrucoes } from '@/pages/Instrucoes'
 import { Missoes } from '@/pages/Missoes'
+import { MissaoDetalhe } from '@/pages/MissaoDetalhe'
+import { BugReport } from '@/pages/BugReport'
 import { CentralDeBugs } from '@/pages/CentralDeBugs'
 import { Dashboard } from '@/pages/Dashboard'
 import { Loja } from '@/pages/Loja'
@@ -31,6 +33,8 @@ export function App() {
         <Route path="/cursos" element={<Cursos />} />
         <Route path="/instrucoes" element={<Instrucoes />} />
         <Route path="/missoes" element={<Missoes />} />
+        <Route path="/missoes/:slug" element={<MissaoDetalhe />} />
+        <Route path="/bug-report" element={<BugReport />} />
         <Route path="/central-de-bugs" element={<CentralDeBugs />} />
 
         <Route path="*" element={<NotFound />} />
