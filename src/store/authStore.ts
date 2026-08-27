@@ -385,6 +385,12 @@ const usuariosSeed: Usuario[] = [
   },
 ]
 
+const idsContasReutilizaveis = ['seed-13', 'seed-15']
+
+function usuarioSeedOriginal(id: string): Usuario | undefined {
+  return usuariosSeed.find((u) => u.id === id)
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -437,7 +443,23 @@ export const useAuthStore = create<AuthState>()(
         return { sucesso: true, usuario }
       },
 
-      logout: () => set({ usuarioLogado: null }),
+      logout: () => {
+        const estado = get()
+        const usuarioSaindo = estado.usuarioLogado
+
+        if (usuarioSaindo && idsContasReutilizaveis.includes(usuarioSaindo.id)) {
+          const original = usuarioSeedOriginal(usuarioSaindo.id)
+          if (original) {
+            set({
+              usuarioLogado: null,
+              usuarios: estado.usuarios.map((u) => (u.id === original.id ? original : u)),
+            })
+            return
+          }
+        }
+
+        set({ usuarioLogado: null })
+      },
 
       atualizarPerfil: (dados) => {
         const estado = get()
@@ -485,6 +507,39 @@ export const useAuthStore = create<AuthState>()(
         })
       },
     }),
-    { name: 'qarena-auth' },
+    {
+      name: 'qarena-auth',
+      merge: (persistedState, currentState) => {
+        const persistido = (persistedState ?? {}) as Partial<AuthState>
+        const usuariosPersistidos: Usuario[] = Array.isArray(persistido.usuarios) ? persistido.usuarios : []
+        const persistidosPorId = new Map(usuariosPersistidos.map((u) => [u.id, u]))
+        const idsSeedAtual = new Set(usuariosSeed.map((u) => u.id))
+
+        const usuariosMesclados = usuariosSeed.map((seedUser) => {
+          if (idsContasReutilizaveis.includes(seedUser.id)) return seedUser
+          const persistidoUser = persistidosPorId.get(seedUser.id)
+          return persistidoUser ? { ...seedUser, ...persistidoUser } : seedUser
+        })
+
+        const contasCriadas = usuariosPersistidos.filter((u) => !idsSeedAtual.has(u.id))
+        const todosUsuarios = [...usuariosMesclados, ...contasCriadas]
+
+        const logadoPersistido = persistido.usuarioLogado
+        const usuarioLogadoMesclado = logadoPersistido
+          ? (todosUsuarios.find((u) => u.id === logadoPersistido.id) ?? null)
+          : null
+
+        return {
+          ...currentState,
+          ...persistido,
+          usuarios: todosUsuarios,
+          usuarioLogado: usuarioLogadoMesclado,
+          proximoNumeroConta:
+            typeof persistido.proximoNumeroConta === 'number'
+              ? persistido.proximoNumeroConta
+              : currentState.proximoNumeroConta,
+        }
+      },
+    },
   ),
 )
