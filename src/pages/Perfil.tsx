@@ -13,7 +13,6 @@ interface ErrosDados {
 interface ErrosSenha {
   senhaAtual?: string
   novaSenha?: string
-  confirmarNovaSenha?: string
 }
 
 export function Perfil() {
@@ -50,9 +49,9 @@ export function Perfil() {
 
     const novosErros: ErrosSenha = {}
     if (novaSenha.length < 6) novosErros.novaSenha = 'A nova senha deve ter pelo menos 6 caracteres'
-    if (confirmarNovaSenha !== novaSenha) novosErros.confirmarNovaSenha = 'A confirmação não é igual à nova senha'
     setErrosSenha(novosErros)
     if (Object.keys(novosErros).length > 0) return
+    if (confirmarNovaSenha !== novaSenha) return
 
     atualizarPerfil({ senha: novaSenha })
     setSenhaAtual('')
@@ -120,8 +119,11 @@ export function Perfil() {
             type="password"
             value={confirmarNovaSenha}
             onChange={(e) => setConfirmarNovaSenha(e.target.value)}
-            erro={errosSenha.confirmarNovaSenha}
-            testIdErro="perfil-msg-erro-confirmar-nova-senha"
+            style={
+              confirmarNovaSenha.length > 0 && confirmarNovaSenha !== novaSenha
+                ? { borderColor: 'var(--color-danger)' }
+                : undefined
+            }
             data-testid="perfil-input-confirmar-nova-senha"
           />
           <Button type="submit" variante="secondary" data-testid="perfil-btn-alterar-senha" className="self-start">

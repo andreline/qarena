@@ -22,8 +22,8 @@ export function Input({ label, erro, testIdErro, id, className, ...props }: Inpu
       <input
         id={idCampo}
         className={cn(
-          'h-11 rounded-lg bg-base-800/80 border border-white/10 px-3.5 text-ink placeholder:text-ink-muted/60 outline-none transition-colors duration-200 focus:border-neon-cyan',
-          erro && 'border-danger/60',
+          'h-11 rounded-lg bg-base-800/80 border px-3.5 text-ink placeholder:text-ink-muted/60 outline-none transition-colors duration-200 focus:border-neon-cyan',
+          erro ? 'border-danger/60' : 'border-white/10',
           className,
         )}
         {...props}

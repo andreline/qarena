@@ -4,8 +4,15 @@ import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { BotaoCopiar } from '@/components/ui/BotaoCopiar'
-import { cupons } from '@/data/cupons'
+import { cupons, type Cupom } from '@/data/cupons'
 import { gerarCPF } from '@/lib/mascaras'
+
+const formatoMoedaCupom = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+
+function rotuloCupom(cupom: Cupom): string {
+  if (cupom.tipo === 'fixo') return `${formatoMoedaCupom.format(cupom.valorFixo ?? 0)} de desconto`
+  return `${cupom.percentualAnunciado}% de desconto`
+}
 
 interface UsuarioTeste {
   slug: string
@@ -59,7 +66,7 @@ const usuariosTeste: UsuarioTeste[] = [
   },
 ]
 
-const formatoData = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' })
+const formatoData = new Intl.DateTimeFormat('en-US', { dateStyle: 'short' })
 
 export function MassaDeDados() {
   const [cpfGerado, setCpfGerado] = useState(() => gerarCPF())
@@ -138,7 +145,7 @@ export function MassaDeDados() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {cupons.map((cupom) => (
             <GlassCard key={cupom.codigo} className="flex flex-col gap-3 p-5" data-testid={`massa-dados-cupom-${cupom.codigo.toLowerCase()}`}>
-              <Badge tom="cyan">{cupom.percentualAnunciado}% de desconto</Badge>
+              <Badge tom="cyan">{rotuloCupom(cupom)}</Badge>
               <p className="text-sm text-ink-muted">{cupom.descricao}</p>
               <p className="text-xs text-ink-muted/70">Válido até {formatoData.format(new Date(cupom.validoAte))}</p>
               <div className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-base-900/60 px-3 py-2">

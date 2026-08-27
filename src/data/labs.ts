@@ -9,6 +9,7 @@ import {
   Target,
   type LucideIcon,
 } from 'lucide-react'
+import { bugs } from './bugs'
 
 export type CorLab = 'cyan' | 'purple' | 'magenta'
 
@@ -19,11 +20,15 @@ export interface Lab {
   rota: string
   icone: LucideIcon
   cor: CorLab
-  bugs: number
+  telas: string[]
   disponivel: boolean
 }
 
-export const labs: Lab[] = [
+function contarBugsPorTelas(telas: string[]): number {
+  return bugs.filter((bug) => telas.includes(bug.tela)).length
+}
+
+const labsBase: Lab[] = [
   {
     id: 'cadastro',
     nome: 'Cadastro',
@@ -31,7 +36,7 @@ export const labs: Lab[] = [
     rota: '/cadastro',
     icone: UserPlus,
     cor: 'purple',
-    bugs: 6,
+    telas: ['Cadastro'],
     disponivel: true,
   },
   {
@@ -41,17 +46,17 @@ export const labs: Lab[] = [
     rota: '/login',
     icone: LogIn,
     cor: 'cyan',
-    bugs: 6,
+    telas: ['Login'],
     disponivel: true,
   },
   {
     id: 'loja',
     nome: 'Loja',
-    descricao: 'A vitrine de produtos fictícios do QArena. Investigue preços, estoque e filtros com atenção redobrada.',
+    descricao: 'A vitrine de produtos fictícios do QArena. Investigue preços, estoque, busca, ordenação e filtros com atenção redobrada.',
     rota: '/app/loja',
     icone: Store,
     cor: 'magenta',
-    bugs: 3,
+    telas: ['Loja'],
     disponivel: true,
   },
   {
@@ -61,7 +66,7 @@ export const labs: Lab[] = [
     rota: '/app/carrinho',
     icone: ShoppingCart,
     cor: 'cyan',
-    bugs: 3,
+    telas: ['Carrinho'],
     disponivel: true,
   },
   {
@@ -71,7 +76,7 @@ export const labs: Lab[] = [
     rota: '/app/checkout',
     icone: Ticket,
     cor: 'purple',
-    bugs: 7,
+    telas: ['Checkout'],
     disponivel: true,
   },
   {
@@ -81,7 +86,7 @@ export const labs: Lab[] = [
     rota: '/app/perfil',
     icone: User,
     cor: 'magenta',
-    bugs: 4,
+    telas: ['Perfil do Usuário'],
     disponivel: true,
   },
   {
@@ -91,7 +96,7 @@ export const labs: Lab[] = [
     rota: '/app/pedidos',
     icone: Package,
     cor: 'cyan',
-    bugs: 4,
+    telas: ['Meus Pedidos'],
     disponivel: true,
   },
   {
@@ -101,9 +106,14 @@ export const labs: Lab[] = [
     rota: '/missoes',
     icone: Target,
     cor: 'purple',
-    bugs: 0,
+    telas: [],
     disponivel: true,
   },
 ]
 
-export const totalBugs = labs.reduce((total, lab) => total + lab.bugs, 0)
+export const labs: (Lab & { bugs: number })[] = labsBase.map((lab) => ({
+  ...lab,
+  bugs: contarBugsPorTelas(lab.telas),
+}))
+
+export const totalBugs = bugs.length

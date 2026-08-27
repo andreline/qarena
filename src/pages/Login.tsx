@@ -21,6 +21,7 @@ export function Login() {
 
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  const [lembrarMe, setLembrarMe] = useState(false)
   const [erros, setErros] = useState<ErrosLogin>({})
 
   function aoSubmeter(evento: FormEvent) {
@@ -69,6 +70,17 @@ export function Login() {
             onChange={(e) => setSenha(e.target.value)}
             placeholder="Sua senha"
           />
+
+          <label className="flex items-center gap-2 text-sm text-ink-muted">
+            <input
+              type="checkbox"
+              checked={lembrarMe}
+              onChange={(e) => setLembrarMe(e.target.checked)}
+              data-testid="login-checkbox-lembrar-me"
+              className="h-4 w-4 rounded border-white/20 bg-base-800/80 accent-neon-cyan"
+            />
+            Lembrar-me
+          </label>
 
           {erros.geral && (
             <p data-testid="login-msg-erro-geral" className="text-sm text-danger">

@@ -95,6 +95,7 @@ export function Cadastro() {
             onChange={(e) => setNome(e.target.value)}
             erro={erros.nome}
             placeholder="Como você quer ser chamado por aqui"
+            tabIndex={1}
           />
 
           <Input
@@ -106,6 +107,7 @@ export function Cadastro() {
             onChange={(e) => setEmail(e.target.value)}
             erro={erros.email}
             placeholder="seuemail@exemplo.com"
+            tabIndex={3}
           />
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -118,6 +120,7 @@ export function Cadastro() {
               erro={erros.cpf}
               placeholder="000.000.000-00"
               inputMode="numeric"
+              tabIndex={5}
             />
 
             <Input
@@ -129,6 +132,7 @@ export function Cadastro() {
               erro={erros.telefone}
               placeholder="(00) 00000-0000"
               inputMode="numeric"
+              tabIndex={2}
             />
           </div>
 
@@ -150,6 +154,7 @@ export function Cadastro() {
               onChange={(e) => setSenha(e.target.value)}
               erro={erros.senha}
               placeholder="Mínimo de 6 caracteres"
+              tabIndex={6}
             />
 
             <Input
@@ -161,6 +166,7 @@ export function Cadastro() {
               onChange={(e) => setConfirmarSenha(e.target.value)}
               erro={erros.confirmarSenha}
               placeholder="Repita a senha"
+              tabIndex={4}
             />
           </div>
 

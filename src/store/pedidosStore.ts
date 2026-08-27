@@ -1,30 +1,16 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { pedidosSeed, type PedidoSeed, type ItemPedido, type StatusPedido } from '@/data/pedidos'
 
-export interface ItemPedido {
-  produtoId: string
-  quantidade: number
-  precoUnitario: number
-}
+export type { ItemPedido, StatusPedido }
 
-export type StatusPedido = 'Processando' | 'Enviado' | 'Entregue'
-
-export interface Pedido {
+export interface Pedido extends PedidoSeed {
   id: string
-  numeroPedido: string
-  usuarioId: string
-  itens: ItemPedido[]
-  subtotal: number
-  desconto: number
-  total: number
-  cupomUsado: string | null
-  status: StatusPedido
-  criadoEm: string
 }
 
 type DadosNovoPedido = Omit<Pedido, 'id' | 'numeroPedido' | 'criadoEm' | 'status'>
 
-const statusPossiveis: StatusPedido[] = ['Processando', 'Enviado', 'Entregue']
+const statusPossiveis: StatusPedido[] = ['Pago', 'Enviado', 'Entregue']
 
 interface PedidosState {
   pedidos: Pedido[]
@@ -35,13 +21,13 @@ interface PedidosState {
 export const usePedidosStore = create<PedidosState>()(
   persist(
     (set, get) => ({
-      pedidos: [],
-      proximoNumero: 1,
+      pedidos: pedidosSeed.map((seed) => ({ ...seed, id: seed.numeroPedido })),
+      proximoNumero: 1019,
 
       criarPedido: (dados) => {
         const estado = get()
-        const numeroPedido = `PED-${String(estado.proximoNumero).padStart(4, '0')}`
-        const status = statusPossiveis[Math.floor(Math.random() * statusPossiveis.length)]
+        const numeroPedido = `PED-${estado.proximoNumero}`
+        const status: StatusPedido = statusPossiveis[Math.floor(Math.random() * statusPossiveis.length)]
 
         const pedido: Pedido = {
           ...dados,

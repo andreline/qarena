@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Minus, Plus, Trash2, ShoppingCart } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
@@ -11,6 +12,7 @@ export function Carrinho() {
   const itens = useCarrinhoStore((estado) => estado.itens)
   const atualizarQuantidade = useCarrinhoStore((estado) => estado.atualizarQuantidade)
   const remover = useCarrinhoStore((estado) => estado.remover)
+  const [textoDigitado, setTextoDigitado] = useState<Record<string, string>>({})
 
   const itensComProduto = itens
     .map((item) => ({ item, produto: produtos.find((p) => p.id === item.produtoId) }))
@@ -50,11 +52,17 @@ export function Carrinho() {
               data-testid={`carrinho-item-${produto.id}`}
             >
               <div className="flex items-center gap-4">
-                <img
-                  src={produto.imagem}
-                  alt={produto.nome}
-                  className="h-11 w-11 shrink-0 rounded-xl border border-white/10 object-cover"
-                />
+                {produto.imagem ? (
+                  <img
+                    src={produto.imagem}
+                    alt={produto.nome}
+                    className="h-11 w-11 shrink-0 rounded-xl border border-white/10 object-cover"
+                  />
+                ) : (
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-ink-muted">
+                    <produto.icone size={20} />
+                  </span>
+                )}
                 <div>
                   <p className="font-display font-medium text-ink">{produto.nome}</p>
                   <p className="font-mono text-sm text-ink-muted">{formatoMoeda.format(produto.preco)} cada</p>
@@ -72,9 +80,33 @@ export function Carrinho() {
                   >
                     <Minus size={14} />
                   </button>
-                  <span data-testid={`carrinho-quantidade-${produto.id}`} className="w-6 text-center font-mono text-sm text-ink">
-                    {item.quantidade}
-                  </span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={textoDigitado[produto.id] ?? String(item.quantidade)}
+                    onKeyDown={(e) => {
+                      const teclasPermitidas = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab']
+                      if (teclasPermitidas.includes(e.key)) return
+                      if (!/^\d$/.test(e.key)) e.preventDefault()
+                    }}
+                    onChange={(e) => {
+                      const valor = e.target.value
+                      setTextoDigitado((atual) => ({ ...atual, [produto.id]: valor }))
+                      const numero = Number(valor)
+                      if (valor !== '' && !Number.isNaN(numero)) {
+                        atualizarQuantidade(item.produtoId, numero)
+                      }
+                    }}
+                    onBlur={() =>
+                      setTextoDigitado((atual) => {
+                        const copia = { ...atual }
+                        delete copia[produto.id]
+                        return copia
+                      })
+                    }
+                    data-testid={`carrinho-quantidade-${produto.id}`}
+                    className="w-10 bg-transparent text-center font-mono text-sm text-ink outline-none"
+                  />
                   <button
                     type="button"
                     onClick={() => atualizarQuantidade(item.produtoId, item.quantidade + 1)}

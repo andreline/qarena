@@ -13,16 +13,23 @@ import { usePedidosStore } from '@/store/pedidosStore'
 
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
+function rotuloCupom(cupom: Cupom): string {
+  if (cupom.tipo === 'fixo') return `${formatoMoeda.format(cupom.valorFixo ?? 0)} de desconto`
+  return `${cupom.percentualAnunciado}% de desconto`
+}
+
 export function Checkout() {
   const itensCarrinho = useCarrinhoStore((estado) => estado.itens)
   const limparCarrinho = useCarrinhoStore((estado) => estado.limpar)
   const usuario = useAuthStore((estado) => estado.usuarioLogado)
   const debitarCreditos = useAuthStore((estado) => estado.debitarCreditos)
   const criarPedido = usePedidosStore((estado) => estado.criarPedido)
+  const pedidos = usePedidosStore((estado) => estado.pedidos)
 
   const [codigoCupom, setCodigoCupom] = useState('')
   const [cupomAplicado, setCupomAplicado] = useState<Cupom | null>(null)
   const [descontoAplicado, setDescontoAplicado] = useState(0)
+  const [erroCupom, setErroCupom] = useState('')
   const [pedidoConcluido, setPedidoConcluido] = useState<{ numero: string; total: number } | null>(null)
 
   const itensComProduto = itensCarrinho
@@ -36,11 +43,30 @@ export function Checkout() {
   const total = Math.max(subtotal - descontoAplicado, 0)
 
   function aoAplicarCupom() {
+    setErroCupom('')
     const cupom = cupons.find((c) => c.codigo === codigoCupom)
     if (!cupom) return
 
+    if (cupom.categoriaRestrita) {
+      const temCategoria = itensComProduto.some(({ produto }) => produto.categoria === cupom.categoriaRestrita)
+      if (!temCategoria) {
+        setErroCupom(`Este cupom é válido apenas para produtos da categoria ${cupom.categoriaRestrita}.`)
+        return
+      }
+    }
+
+    if (cupom.usoUnico && usuario) {
+      const jaUsado = pedidos.some((p) => p.usuarioId === usuario.id && p.cupomUsado === cupom.codigo)
+      if (jaUsado) {
+        setErroCupom('Você já usou este cupom antes.')
+        return
+      }
+    }
+
+    const desconto = cupom.tipo === 'fixo' ? Math.min(cupom.valorFixo ?? 0, subtotal) : subtotal * ((cupom.percentualAplicado ?? 0) / 100)
+
     setCupomAplicado(cupom)
-    setDescontoAplicado(subtotal * (cupom.percentualAplicado / 100))
+    setDescontoAplicado(desconto)
     setCodigoCupom('')
   }
 
@@ -62,8 +88,12 @@ export function Checkout() {
       })),
       subtotal,
       desconto: descontoAplicado,
+      frete: 0,
       total,
       cupomUsado: cupomAplicado?.codigo ?? null,
+      formaPagamento: 'Créditos QA',
+      enderecoEntrega: 'Endereço cadastrado na conta',
+      codigoRastreio: null,
     })
 
     limparCarrinho()
@@ -125,7 +155,13 @@ export function Checkout() {
         {itensComProduto.map(({ item, produto }) => (
           <div key={produto.id} className="flex items-center justify-between gap-3 text-sm">
             <div className="flex items-center gap-3">
-              <img src={produto.imagem} alt={produto.nome} className="h-9 w-9 rounded-lg border border-white/10 object-cover" />
+              {produto.imagem ? (
+                <img src={produto.imagem} alt={produto.nome} className="h-9 w-9 rounded-lg border border-white/10 object-cover" />
+              ) : (
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-ink-muted">
+                  <produto.icone size={16} />
+                </span>
+              )}
               <span className="text-ink-muted">
                 {produto.nome} <span className="font-mono">x{item.quantidade}</span>
               </span>
@@ -144,7 +180,7 @@ export function Checkout() {
               <span data-testid="checkout-cupom-aplicado" className="font-mono text-sm text-ink">
                 {cupomAplicado.codigo}
               </span>
-              <Badge tom="cyan">{cupomAplicado.percentualAnunciado}% de desconto</Badge>
+              <Badge tom="cyan">{rotuloCupom(cupomAplicado)}</Badge>
             </div>
             <button
               type="button"
@@ -157,17 +193,24 @@ export function Checkout() {
             </button>
           </div>
         ) : (
-          <div className="flex gap-2">
-            <Input
-              value={codigoCupom}
-              onChange={(e) => setCodigoCupom(e.target.value)}
-              placeholder="Código do cupom"
-              data-testid="checkout-input-cupom"
-              className="flex-1"
-            />
-            <Button variante="secondary" onClick={aoAplicarCupom} data-testid="checkout-btn-aplicar-cupom">
-              Aplicar
-            </Button>
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Input
+                value={codigoCupom}
+                onChange={(e) => setCodigoCupom(e.target.value)}
+                placeholder="Código do cupom"
+                data-testid="checkout-input-cupom"
+                className="flex-1"
+              />
+              <Button variante="secondary" onClick={aoAplicarCupom} data-testid="checkout-btn-aplicar-cupom">
+                Aplicar
+              </Button>
+            </div>
+            {erroCupom && (
+              <p data-testid="checkout-msg-erro-cupom" className="text-sm text-danger">
+                {erroCupom}
+              </p>
+            )}
           </div>
         )}
       </GlassCard>

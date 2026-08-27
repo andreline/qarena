@@ -10,12 +10,33 @@ import { cn } from '@/lib/utils'
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 const formatoData = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
 
-const statusFiltros: Array<StatusPedido | 'Todos'> = ['Todos', 'Processando', 'Enviado', 'Entregue']
+const statusFiltros: Array<StatusPedido | 'Todos'> = [
+  'Todos',
+  'Aguardando pagamento',
+  'Pago',
+  'Em separação',
+  'Enviado',
+  'Entregue',
+  'Cancelado',
+  'Devolvido',
+]
 
-const corPorStatus: Record<StatusPedido, 'warning' | 'cyan' | 'success'> = {
-  Processando: 'warning',
+const corPorStatus: Record<StatusPedido, 'warning' | 'cyan' | 'success' | 'danger' | 'muted'> = {
+  'Aguardando pagamento': 'warning',
+  Pago: 'cyan',
+  'Em separação': 'cyan',
   Enviado: 'cyan',
   Entregue: 'success',
+  Cancelado: 'danger',
+  Devolvido: 'muted',
+}
+
+function slugStatus(status: string): string {
+  return status
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, '-')
 }
 
 export function MeusPedidos() {
@@ -49,7 +70,7 @@ export function MeusPedidos() {
             key={status}
             type="button"
             onClick={() => setFiltroStatus(status)}
-            data-testid={`pedidos-btn-filtro-${status.toLowerCase()}`}
+            data-testid={`pedidos-btn-filtro-${slugStatus(status)}`}
             className={cn(
               'rounded-full border px-4 py-1.5 text-sm font-medium transition-colors cursor-pointer',
               filtroStatus === status

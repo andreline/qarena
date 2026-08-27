@@ -21,6 +21,7 @@ const secoes: SecaoRequisitos[] = [
       'O telefone deve aceitar corretamente números de celular com nono dígito',
       'O sistema deve avisar quando o e-mail informado já estiver cadastrado',
       'Mensagens de sucesso só devem aparecer quando o cadastro for realmente concluído',
+      'A navegação por Tab entre os campos deve seguir a ordem visual do formulário',
     ],
   },
   {
@@ -34,6 +35,8 @@ const secoes: SecaoRequisitos[] = [
       'O formato do e-mail deve ser validado antes do envio do formulário',
       'Usuário sem permissão de acesso deve ver uma mensagem clara, nunca uma tela vazia',
       'Uma conta suspensa deve ser barrada no login, com uma mensagem clara explicando o motivo',
+      'Depois de sair da conta, voltar no navegador não deve mostrar novamente uma tela autenticada',
+      'A opção "Lembrar-me" deve realmente manter a sessão ativa por mais tempo quando marcada',
     ],
   },
   {
@@ -43,6 +46,15 @@ const secoes: SecaoRequisitos[] = [
       'A busca por produto deve funcionar independente de letras maiúsculas ou minúsculas',
       'O filtro de categoria deve mostrar apenas produtos daquela categoria',
       'Produtos sem estoque não devem poder ser adicionados ao carrinho',
+      'A busca deve encontrar produtos que contenham o termo digitado em qualquer parte do nome, não só no início',
+      'A busca deve funcionar independente de acentuação',
+      'A ordenação por "Menor preço" deve considerar o valor numérico dos preços',
+      'O contador de filtros aplicados deve refletir os filtros realmente ativos no momento',
+      'O texto de resultados deve mostrar a quantidade de produtos exibida na página atual',
+      'O campo de busca deve ter um rótulo associado, para acessibilidade',
+      'As imagens dos produtos devem ter um texto alternativo descritivo com o nome do produto',
+      'Preços acima de mil reais devem exibir o separador de milhar',
+      'Nomes de produtos longos não podem estourar o layout do card',
     ],
   },
   {
@@ -52,6 +64,8 @@ const secoes: SecaoRequisitos[] = [
       'A quantidade mínima de um item no carrinho deve ser 1, para remover use o botão de remover',
       'O valor total do carrinho deve ser a soma de cada item multiplicado pela quantidade escolhida',
       'O contador de itens do carrinho deve refletir corretamente o que está no carrinho, inclusive depois de remover um item',
+      'O carrinho deve ser exclusivo de cada conta logada',
+      'O campo de quantidade deve aceitar apenas números',
     ],
   },
   {
@@ -75,6 +89,7 @@ const secoes: SecaoRequisitos[] = [
       'Um e-mail já usado por outra conta não deve ser aceito na edição do perfil',
       'As alterações salvas no perfil devem persistir corretamente, inclusive o telefone',
       'O nome não pode ser salvo em branco',
+      'Quando a confirmação de senha não é igual à nova senha, deve aparecer uma mensagem explicando o motivo',
     ],
   },
   {
@@ -85,6 +100,13 @@ const secoes: SecaoRequisitos[] = [
       'Os pedidos devem aparecer do mais recente para o mais antigo',
       'O valor exibido em cada pedido deve ser o total pago, já considerando o desconto do cupom',
       'O filtro por status deve mostrar apenas pedidos com aquele status',
+    ],
+  },
+  {
+    id: 'massa-de-dados',
+    titulo: 'Massa de Dados',
+    itens: [
+      'As datas devem ser exibidas no formato brasileiro (dia/mês/ano) em todas as telas do site',
     ],
   },
 ]

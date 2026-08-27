@@ -43,6 +43,12 @@ export const bugs: Bug[] = [
     comportamentoAtual: 'E-mails duplicados são aceitos sem nenhum aviso.',
   },
   {
+    id: 'ACE-04',
+    tela: 'Cadastro',
+    comportamentoEsperado: 'A navegação por Tab entre os campos do cadastro deve seguir a ordem visual do formulário.',
+    comportamentoAtual: 'A ordem de navegação por Tab pula os campos fora da ordem visual.',
+  },
+  {
     id: 'LOG-01',
     tela: 'Login',
     comportamentoEsperado: 'Usuário com status bloqueado não deve conseguir acessar o sistema.',
@@ -79,6 +85,18 @@ export const bugs: Bug[] = [
     comportamentoAtual: 'Usuário sem permissão entra e vê uma tela em branco, sem nenhuma mensagem.',
   },
   {
+    id: 'SES-01',
+    tela: 'Login',
+    comportamentoEsperado: 'Depois de sair da conta, o botão voltar do navegador não deve mostrar uma tela autenticada.',
+    comportamentoAtual: 'Ao clicar em voltar depois do logout, o navegador pode exibir a última tela autenticada guardada em cache.',
+  },
+  {
+    id: 'SES-03',
+    tela: 'Login',
+    comportamentoEsperado: 'A opção "Lembrar-me" deve manter a sessão ativa por mais tempo quando marcada.',
+    comportamentoAtual: 'A caixa "Lembrar-me" pode ser marcada, mas não altera em nada o comportamento da sessão.',
+  },
+  {
     id: 'LOJ-01',
     tela: 'Loja',
     comportamentoEsperado: 'Produtos sem estoque não devem poder ser adicionados ao carrinho.',
@@ -97,6 +115,60 @@ export const bugs: Bug[] = [
     comportamentoAtual: 'Buscar em letras minúsculas não encontra produtos com nomes capitalizados.',
   },
   {
+    id: 'BUS-01',
+    tela: 'Loja',
+    comportamentoEsperado: 'A busca de produtos deve encontrar resultados que contenham o termo digitado em qualquer parte do nome.',
+    comportamentoAtual: 'A busca só encontra produtos cujo nome começa exatamente com o termo digitado.',
+  },
+  {
+    id: 'BUS-02',
+    tela: 'Loja',
+    comportamentoEsperado: 'A busca deve funcionar independente de acentuação.',
+    comportamentoAtual: 'Buscar um termo sem acento não encontra produtos com nomes acentuados.',
+  },
+  {
+    id: 'BUS-03',
+    tela: 'Loja',
+    comportamentoEsperado: 'A ordenação por "Menor preço" deve ordenar os valores numericamente.',
+    comportamentoAtual: 'A ordenação por "Menor preço" compara os preços como texto, então a ordem pode sair errada.',
+  },
+  {
+    id: 'BUS-04',
+    tela: 'Loja',
+    comportamentoEsperado: 'O contador de filtros aplicados deve refletir os filtros realmente ativos no momento.',
+    comportamentoAtual: 'O contador de filtros só aumenta, mesmo trocando ou removendo a categoria selecionada.',
+  },
+  {
+    id: 'BUS-05',
+    tela: 'Loja',
+    comportamentoEsperado: 'O texto de resultados deve mostrar a quantidade de produtos realmente exibida na página atual.',
+    comportamentoAtual: 'O texto de resultados mostra o total de produtos filtrados, mesmo exibindo só uma página por vez.',
+  },
+  {
+    id: 'ACE-01',
+    tela: 'Loja',
+    comportamentoEsperado: 'O campo de busca da loja deve ter um rótulo associado, para leitores de tela.',
+    comportamentoAtual: 'O campo de busca não tem nenhum label associado, só o placeholder.',
+  },
+  {
+    id: 'ACE-02',
+    tela: 'Loja',
+    comportamentoEsperado: 'As imagens dos produtos devem ter um texto alternativo descritivo com o nome do produto.',
+    comportamentoAtual: 'As imagens dos produtos têm o texto alternativo vazio.',
+  },
+  {
+    id: 'FMT-01',
+    tela: 'Loja',
+    comportamentoEsperado: 'Os preços devem ser exibidos no formato brasileiro, com separador de milhar.',
+    comportamentoAtual: 'Preços acima de mil reais aparecem sem o separador de milhar.',
+  },
+  {
+    id: 'FMT-04',
+    tela: 'Loja',
+    comportamentoEsperado: 'Nomes de produtos muito longos devem quebrar linha ou ser cortados sem estourar o layout do card.',
+    comportamentoAtual: 'Nomes de produtos muito longos estouram a largura do card.',
+  },
+  {
     id: 'CAR-01',
     tela: 'Carrinho',
     comportamentoEsperado: 'A quantidade mínima de um item no carrinho deve ser 1.',
@@ -113,6 +185,18 @@ export const bugs: Bug[] = [
     tela: 'Carrinho',
     comportamentoEsperado: 'O contador de itens do carrinho deve refletir o carrinho após qualquer alteração.',
     comportamentoAtual: 'O contador não é atualizado quando um item é removido do carrinho.',
+  },
+  {
+    id: 'SES-02',
+    tela: 'Carrinho',
+    comportamentoEsperado: 'O carrinho de compras deve ser exclusivo de cada conta logada.',
+    comportamentoAtual: 'O carrinho é compartilhado entre todas as contas usadas no mesmo navegador.',
+  },
+  {
+    id: 'FMT-03',
+    tela: 'Carrinho',
+    comportamentoEsperado: 'O campo de quantidade deve aceitar apenas números.',
+    comportamentoAtual: 'É possível colar texto não numérico no campo de quantidade.',
   },
   {
     id: 'CHK-01',
@@ -181,6 +265,12 @@ export const bugs: Bug[] = [
     comportamentoAtual: 'O formulário aceita salvar o nome completamente vazio.',
   },
   {
+    id: 'ACE-03',
+    tela: 'Perfil do Usuário',
+    comportamentoEsperado: 'Quando a confirmação de senha não é igual à nova senha, deve aparecer uma mensagem de erro explicando o problema.',
+    comportamentoAtual: 'O campo só fica com a borda vermelha, sem nenhuma mensagem explicando o motivo.',
+  },
+  {
     id: 'PED-01',
     tela: 'Meus Pedidos',
     comportamentoEsperado: 'A lista de pedidos deve mostrar apenas os pedidos do usuário logado.',
@@ -203,6 +293,12 @@ export const bugs: Bug[] = [
     tela: 'Meus Pedidos',
     comportamentoEsperado: 'O filtro por status deve mostrar apenas pedidos com aquele status.',
     comportamentoAtual: 'O filtro por status não muda a lista exibida.',
+  },
+  {
+    id: 'FMT-02',
+    tela: 'Massa de Dados',
+    comportamentoEsperado: 'As datas devem ser exibidas no formato brasileiro (dia/mês/ano) em todas as telas.',
+    comportamentoAtual: 'A data de validade dos cupons aparece no formato americano (mês/dia/ano), diferente do resto do site.',
   },
 ]
 
