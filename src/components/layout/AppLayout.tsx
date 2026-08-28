@@ -1,8 +1,11 @@
 import { Outlet, Link } from 'react-router-dom'
 import { Store, ShoppingCart, User, Package, LogOut, ShieldCheck, Mail } from 'lucide-react'
 import { Footer } from './Footer'
+import { Escudo } from '@/components/Escudo'
 import { useCarrinhoStore } from '@/store/carrinhoStore'
 import { useEmailStore } from '@/store/emailStore'
+import { useProgressoStore } from '@/store/progressoStore'
+import { calcularNivelAtual, calcularProximoNivel, totalMissoes } from '@/data/niveisConfig'
 
 interface AppLayoutProps {
   nome: string
@@ -23,6 +26,17 @@ const atalhos = [
 export function AppLayout({ nome, numeroConta, creditos, admin, aoSair }: AppLayoutProps) {
   const quantidadeCarrinho = useCarrinhoStore((estado) => estado.quantidadeTotal)
   const emailsNaoLidos = useEmailStore((estado) => estado.emails.filter((e) => !e.lido).length)
+  const missoesConcluidas = useProgressoStore((estado) => estado.missoesConcluidas)
+  const nivelAtual = calcularNivelAtual(missoesConcluidas.length)
+  const proximoNivel = calcularProximoNivel(missoesConcluidas.length)
+  const percentualNivel = proximoNivel
+    ? Math.min(
+        100,
+        ((missoesConcluidas.length - nivelAtual.missoesNecessarias) /
+          (proximoNivel.missoesNecessarias - nivelAtual.missoesNecessarias)) *
+          100,
+      )
+    : 100
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
@@ -52,6 +66,24 @@ export function AppLayout({ nome, numeroConta, creditos, admin, aoSair }: AppLay
             {creditos}
           </p>
         </div>
+
+        <Link
+          to="/progresso"
+          data-testid="app-sidebar-resumo-progresso"
+          className="flex items-center gap-3 rounded-xl border border-white/10 bg-base-800/60 p-3 transition-colors hover:border-neon-cyan/30"
+        >
+          <Escudo nivel={nivelAtual.numero} tamanho={40} />
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
+            <p className="truncate text-xs font-medium text-ink">{nivelAtual.nome}</p>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-neon-cyan to-neon-purple"
+                style={{ width: `${percentualNivel}%` }}
+              />
+            </div>
+            <p className="text-[11px] text-ink-muted">{missoesConcluidas.length} de {totalMissoes} missões</p>
+          </div>
+        </Link>
 
         <nav className="flex flex-col gap-1" aria-label="Atalhos da área logada">
           {atalhos.map(({ rotulo, rota, Icone }) => (

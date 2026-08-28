@@ -91,4 +91,105 @@
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
+
+  .animate-escudo-pulso {
+    animation: escudo-pulso 2.4s ease-in-out infinite;
+  }
+
+  .animate-escudo-girando {
+    animation: escudo-hue 4s linear infinite;
+  }
+
+  .animate-raios {
+    animation: raios-girar 14s linear infinite;
+  }
+
+  .animate-fundo-escurecer {
+    animation: fundo-escurecer 200ms ease-out forwards;
+  }
+
+  .animate-escudo-entrada {
+    animation: escudo-entrada 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .animate-clarao {
+    animation: clarao-flash 300ms ease-out forwards;
+  }
+
+  .animate-particula {
+    animation: particula-cair 1100ms ease-in forwards;
+  }
+
+  .animate-confete {
+    animation: confete-cair 2600ms linear forwards;
+  }
+
+  .animate-fade-simples {
+    animation: fade-simples 250ms ease-out forwards;
+  }
+}
+
+@keyframes escudo-pulso {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.35)); }
+  50% { filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.65)); }
+}
+
+@keyframes escudo-hue {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+@keyframes raios-girar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fundo-escurecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes escudo-entrada {
+  0% { transform: scale(0.3) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+  80% { transform: scale(0.96) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes clarao-flash {
+  0% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+@keyframes particula-cair {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--dx, 0px), 160px) rotate(220deg); opacity: 0; }
+}
+
+@keyframes confete-cair {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(560px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes fade-simples {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-escudo-pulso,
+  .animate-escudo-girando,
+  .animate-raios,
+  .animate-particula,
+  .animate-confete {
+    animation: none !important;
+  }
+
+  .animate-escudo-entrada {
+    animation: fade-simples 250ms ease-out forwards !important;
+  }
+
+  .animate-fundo-escurecer {
+    animation: fade-simples 200ms ease-out forwards !important;
+  }
 }

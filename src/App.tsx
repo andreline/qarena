@@ -25,6 +25,7 @@ import { AdminProdutos } from '@/pages/AdminProdutos'
 import { EsqueciSenha } from '@/pages/EsqueciSenha'
 import { RedefinirSenha } from '@/pages/RedefinirSenha'
 import { CaixaDeEntrada } from '@/pages/CaixaDeEntrada'
+import { Progresso } from '@/pages/Progresso'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -42,6 +43,7 @@ export function App() {
         <Route path="/instrucoes" element={<Instrucoes />} />
         <Route path="/missoes" element={<Missoes />} />
         <Route path="/missoes/:slug" element={<MissaoDetalhe />} />
+        <Route path="/progresso" element={<Progresso />} />
         <Route path="/bug-report" element={<BugReport />} />
         <Route path="/central-de-bugs" element={<CentralDeBugs />} />
 

@@ -1,22 +1,68 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ChevronRight, Target } from 'lucide-react'
+import { Check, ChevronRight, Target, Lightbulb } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
-import { missoes, type NivelMissao } from '@/data/missoes'
-import { useMissoesStore } from '@/store/missoesStore'
+import { missoes, type GrupoMissao } from '@/data/missoes'
+import { totalMissoes } from '@/data/niveisConfig'
+import { useProgressoStore } from '@/store/progressoStore'
 import { cn } from '@/lib/utils'
 
-const corPorNivel: Record<NivelMissao, 'success' | 'warning' | 'danger'> = {
-  Fácil: 'success',
-  Médio: 'warning',
-  Difícil: 'danger',
+const corPorNivel: Record<GrupoMissao, 'success' | 'warning' | 'danger' | 'magenta'> = {
+  Iniciante: 'success',
+  Explorador: 'warning',
+  Analista: 'magenta',
+  Especialista: 'danger',
+}
+
+const grupos: GrupoMissao[] = ['Iniciante', 'Explorador', 'Analista', 'Especialista']
+
+const laboratoriosDasMissoes = Array.from(new Set(missoes.map((m) => m.laboratorio)))
+
+type EstadoMissao = 'nao-iniciada' | 'em-andamento' | 'concluida'
+
+function IndicadorMissao({ estado, usouDica }: { estado: EstadoMissao; usouDica: boolean }) {
+  const titulo =
+    estado === 'concluida'
+      ? 'Missão concluída'
+      : estado === 'em-andamento'
+        ? 'Missão em andamento. Abra a missão para concluir'
+        : 'Abra a missão para concluir'
+
+  return (
+    <span
+      title={titulo}
+      data-testid="missao-indicador"
+      data-estado={estado}
+      className={cn(
+        'relative mt-0.5 flex h-6 w-6 shrink-0 cursor-default items-center justify-center rounded-full border transition-colors',
+        estado === 'concluida' && 'border-neon-cyan bg-neon-cyan text-base-900',
+        estado === 'em-andamento' && 'border-neon-cyan bg-neon-cyan/15 text-transparent',
+        estado === 'nao-iniciada' && 'border-white/20 text-transparent',
+      )}
+    >
+      {estado === 'concluida' && <Check size={14} />}
+      {estado === 'em-andamento' && <span className="h-2 w-2 rounded-full bg-neon-cyan" />}
+      {usouDica && estado !== 'nao-iniciada' && (
+        <Lightbulb size={10} className="absolute -bottom-1 -right-1 rounded-full bg-base-900 text-warning" />
+      )}
+    </span>
+  )
 }
 
 export function Missoes() {
-  const concluidas = useMissoesStore((estado) => estado.concluidas)
-  const alternarConclusao = useMissoesStore((estado) => estado.alternarConclusao)
+  const missoesConcluidas = useProgressoStore((estado) => estado.missoesConcluidas)
+  const missoesEmAndamento = useProgressoStore((estado) => estado.missoesEmAndamento)
+  const dicasUsadas = useProgressoStore((estado) => estado.dicasUsadas)
 
-  const totalConcluidas = concluidas.length
+  const [filtroNivel, setFiltroNivel] = useState<GrupoMissao | 'Todos'>('Todos')
+  const [filtroLaboratorio, setFiltroLaboratorio] = useState<string>('Todos')
+
+  const missoesFiltradas = missoes.filter((missao) => {
+    const combinaNivel = filtroNivel === 'Todos' || missao.nivel === filtroNivel
+    const combinaLaboratorio = filtroLaboratorio === 'Todos' || missao.laboratorio === filtroLaboratorio
+    return combinaNivel && combinaLaboratorio
+  })
 
   return (
     <div className="container-arena flex flex-col gap-8 py-16">
@@ -27,51 +73,83 @@ export function Missoes() {
         <h1 className="font-display text-3xl font-bold text-ink md:text-4xl">Missões QA</h1>
         <p className="max-w-2xl text-ink-muted">
           Desafios guiados para praticar seu raciocínio de investigação. Nenhuma missão entrega o bug de bandeja,
-          elas só apontam onde olhar.
+          elas só apontam onde olhar. A conclusão só acontece dentro da missão.
         </p>
         <Badge tom="cyan" data-testid="missoes-progresso">
-          {totalConcluidas} de {missoes.length} concluídas
+          {missoesConcluidas.length} de {totalMissoes} concluídas
         </Badge>
       </div>
 
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
-        {missoes.map((missao) => {
-          const concluida = concluidas.includes(missao.id)
-          return (
-            <GlassCard
-              key={missao.id}
-              className={cn('flex items-start gap-4 p-5 transition-colors', concluida && 'border-success/30')}
-              data-testid={`missoes-item-${missao.id}`}
-            >
-              <button
-                type="button"
-                onClick={() => alternarConclusao(missao.id)}
-                data-testid={`missoes-btn-concluir-${missao.id}`}
-                aria-label={concluida ? 'Marcar como não concluída' : 'Marcar como concluída'}
-                className={cn(
-                  'mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-colors cursor-pointer',
-                  concluida
-                    ? 'border-success bg-success/20 text-success'
-                    : 'border-white/20 text-transparent hover:border-white/40',
-                )}
-              >
-                <Check size={14} />
-              </button>
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:justify-center">
+        <select
+          value={filtroNivel}
+          onChange={(e) => setFiltroNivel(e.target.value as GrupoMissao | 'Todos')}
+          data-testid="missoes-select-nivel"
+          className="h-10 rounded-lg border border-white/10 bg-base-800/80 px-3 text-sm text-ink outline-none focus:border-neon-cyan"
+        >
+          <option value="Todos">Todos os níveis</option>
+          {grupos.map((g) => (
+            <option key={g} value={g}>
+              {g}
+            </option>
+          ))}
+        </select>
 
-              <Link to={`/missoes/${missao.id}`} className="flex flex-1 items-center justify-between gap-3" data-testid={`missoes-link-${missao.id}`}>
-                <div className="flex flex-col gap-1.5">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="font-display font-semibold text-ink">{missao.titulo}</h2>
-                    <Badge tom="muted">{missao.tela}</Badge>
-                    <Badge tom={corPorNivel[missao.nivel]}>{missao.nivel}</Badge>
+        <select
+          value={filtroLaboratorio}
+          onChange={(e) => setFiltroLaboratorio(e.target.value)}
+          data-testid="missoes-select-laboratorio"
+          className="h-10 rounded-lg border border-white/10 bg-base-800/80 px-3 text-sm text-ink outline-none focus:border-neon-cyan"
+        >
+          <option value="Todos">Todos os laboratórios</option>
+          {laboratoriosDasMissoes.map((lab) => (
+            <option key={lab} value={lab}>
+              {lab}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4" data-testid="missoes-lista">
+        {missoesFiltradas.map((missao) => {
+          const concluida = missoesConcluidas.includes(missao.id)
+          const emAndamento = missoesEmAndamento.includes(missao.id)
+          const estado: EstadoMissao = concluida ? 'concluida' : emAndamento ? 'em-andamento' : 'nao-iniciada'
+
+          return (
+            <Link
+              key={missao.id}
+              to={`/missoes/${missao.id}`}
+              data-testid={`missoes-link-${missao.id}`}
+            >
+              <GlassCard
+                className={cn('flex items-start gap-4 p-5 transition-colors hover:border-white/20', concluida && 'border-success/30')}
+                data-testid={`missoes-item-${missao.id}`}
+              >
+                <IndicadorMissao estado={estado} usouDica={dicasUsadas.includes(missao.id)} />
+
+                <div className="flex flex-1 items-center justify-between gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-mono text-xs text-ink-muted">{missao.numero}.</span>
+                      <h2 className="font-display font-semibold text-ink">{missao.nome}</h2>
+                      <Badge tom="muted">{missao.laboratorio}</Badge>
+                      <Badge tom={corPorNivel[missao.nivel]}>{missao.nivel}</Badge>
+                    </div>
+                    <p className="text-sm text-ink-muted">{missao.objetivo}</p>
                   </div>
-                  <p className="text-sm text-ink-muted">{missao.desafio}</p>
+                  <ChevronRight size={20} className="shrink-0 text-ink-muted" />
                 </div>
-                <ChevronRight size={20} className="shrink-0 text-ink-muted" />
-              </Link>
-            </GlassCard>
+              </GlassCard>
+            </Link>
           )
         })}
+
+        {missoesFiltradas.length === 0 && (
+          <p className="py-8 text-center text-ink-muted" data-testid="missoes-msg-vazio">
+            Nenhuma missão encontrada com esses filtros.
+          </p>
+        )}
       </div>
     </div>
   )

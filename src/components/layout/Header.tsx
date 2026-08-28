@@ -18,6 +18,7 @@ const itensNav: ItemNav[] = [
   { rotulo: 'Instruções', rota: '/instrucoes', disponivel: true },
   { rotulo: 'Massa de dados', rota: '/massa-de-dados', disponivel: true },
   { rotulo: 'Missões', rota: '/missoes', disponivel: true },
+  { rotulo: 'Meu Progresso', rota: '/progresso', disponivel: true },
   { rotulo: 'Central de Bugs', rota: '/central-de-bugs', disponivel: true },
 ]
 
