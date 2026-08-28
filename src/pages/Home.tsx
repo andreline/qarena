@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ClipboardCheck, FlaskConical, Search, UserPlus } from 'lucide-react'
+import { ClipboardCheck, FlaskConical, Search, UserPlus, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Badge } from '@/components/ui/Badge'
@@ -159,6 +159,27 @@ export function Home() {
             </GlassCard>
           ))}
         </div>
+      </section>
+
+      <section className="mx-auto flex w-full max-w-2xl items-center justify-center">
+        <Link
+          to="/sobre"
+          data-testid="home-link-sobre"
+          className="glass flex items-center gap-4 rounded-2xl px-6 py-4 transition-colors hover:border-neon-cyan/30"
+        >
+          <img
+            src="/andreline.jpg"
+            alt="Andreline Lira, criadora da QArena"
+            className="h-12 w-12 shrink-0 rounded-full object-cover"
+          />
+          <p className="text-sm text-ink-muted">
+            Feito por Andreline Lira, Analista de Qualidade Sênior.{' '}
+            <span className="inline-flex items-center gap-1 text-neon-cyan">
+              Conheça quem criou este ambiente
+              <ArrowRight size={14} />
+            </span>
+          </p>
+        </Link>
       </section>
     </div>
   )

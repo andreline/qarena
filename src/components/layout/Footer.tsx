@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { useToast } from '@/components/ui/Toast'
 
 const CLIQUES_PARA_REVELAR = 5
@@ -39,7 +40,11 @@ export function Footer() {
         </button>
 
         <p data-testid="footer-autoria">
-          Projeto educacional criado por Andreline Lira para ajudar novos QAs a praticarem testes na prática.
+          Projeto educacional criado por{' '}
+          <Link to="/sobre" data-testid="footer-link-autoria" className="text-neon-cyan hover:underline">
+            Andreline Lira
+          </Link>{' '}
+          para ajudar novos QAs a praticarem testes na prática.
         </p>
 
         <p>

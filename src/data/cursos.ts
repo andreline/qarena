@@ -13,15 +13,3 @@ export const cursos: Curso[] = [
     url: 'https://andrelinegfl.hotmart.host/qa-do-zero-a-base-que-todo-analista-de-qualidade-precisa-ter-92190e5b-8be7-4fb9-815a-e6ec4a9197ca',
   },
 ]
-
-export interface RedeSocial {
-  id: string
-  nome: string
-  url: string
-}
-
-export const redesSociais: RedeSocial[] = [
-  { id: 'instagram', nome: 'Instagram', url: 'https://www.instagram.com/andreline.qa/' },
-  { id: 'linkedin', nome: 'LinkedIn', url: 'https://www.linkedin.com/in/andrelineflira/' },
-  { id: 'tiktok', nome: 'TikTok', url: 'https://www.tiktok.com/@andreline.lira' },
-]

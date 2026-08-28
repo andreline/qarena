@@ -26,6 +26,7 @@ import { EsqueciSenha } from '@/pages/EsqueciSenha'
 import { RedefinirSenha } from '@/pages/RedefinirSenha'
 import { CaixaDeEntrada } from '@/pages/CaixaDeEntrada'
 import { Progresso } from '@/pages/Progresso'
+import { Sobre } from '@/pages/Sobre'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -33,6 +34,7 @@ export function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/sobre" element={<Sobre />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/login" element={<Login />} />
         <Route path="/esqueci-senha" element={<EsqueciSenha />} />
@@ -44,6 +46,7 @@ export function App() {
         <Route path="/missoes" element={<Missoes />} />
         <Route path="/missoes/:slug" element={<MissaoDetalhe />} />
         <Route path="/progresso" element={<Progresso />} />
+        <Route path="/caixa-de-entrada" element={<CaixaDeEntrada />} />
         <Route path="/bug-report" element={<BugReport />} />
         <Route path="/central-de-bugs" element={<CentralDeBugs />} />
 
@@ -58,7 +61,6 @@ export function App() {
           <Route path="/app/checkout" element={<Checkout />} />
           <Route path="/app/perfil" element={<Perfil />} />
           <Route path="/app/pedidos" element={<MeusPedidos />} />
-          <Route path="/caixa-de-entrada" element={<CaixaDeEntrada />} />
           <Route path="/regularizacao" element={<RegularizacaoCadastro />} />
           <Route path="/conta-inativa" element={<ContaInativa />} />
           <Route path="/admin" element={<AdminProdutos />} />

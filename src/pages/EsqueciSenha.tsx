@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { MailCheck } from 'lucide-react'
+import { MailCheck, Inbox } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { GlassCard } from '@/components/ui/GlassCard'
@@ -40,9 +40,17 @@ export function EsqueciSenha() {
               <MailCheck size={22} />
             </span>
             {resultado.emailExiste ? (
-              <p data-testid="esqueci-senha-msg-sucesso" className="text-sm text-ink-muted">
-                Enviamos um link de recuperação para o seu e-mail. Confira sua caixa de entrada.
-              </p>
+              <>
+                <p data-testid="esqueci-senha-msg-sucesso" className="text-sm text-ink-muted">
+                  Enviamos um link de recuperação para o seu e-mail. Confira sua caixa de entrada.
+                </p>
+                <Link to="/caixa-de-entrada" className="w-full">
+                  <Button variante="primary" data-testid="esqueci-senha-btn-abrir-caixa" className="w-full">
+                    <Inbox size={16} />
+                    Abrir caixa de entrada
+                  </Button>
+                </Link>
+              </>
             ) : (
               <p data-testid="esqueci-senha-msg-nao-cadastrado" className="text-sm text-danger">
                 E-mail não cadastrado.

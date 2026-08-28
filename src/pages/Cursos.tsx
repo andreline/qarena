@@ -2,13 +2,15 @@ import type { ComponentType } from 'react'
 import { GraduationCap, ExternalLink, Music2 } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Button } from '@/components/ui/Button'
-import { InstagramIcon, LinkedinIcon } from '@/components/icons/IconesSociais'
-import { cursos, redesSociais } from '@/data/cursos'
+import { InstagramIcon, LinkedinIcon, GithubIcon } from '@/components/icons/IconesSociais'
+import { cursos } from '@/data/cursos'
+import { redes } from '@/data/redes'
 
 const iconesPorRede: Record<string, ComponentType<{ size?: number; className?: string }>> = {
   instagram: InstagramIcon,
   linkedin: LinkedinIcon,
   tiktok: Music2,
+  github: GithubIcon,
 }
 
 export function Cursos() {
@@ -47,7 +49,7 @@ export function Cursos() {
       <section className="mx-auto flex w-full max-w-3xl flex-col items-center gap-5">
         <h2 className="font-display text-xl font-semibold text-ink">Onde me encontrar</h2>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {redesSociais.map((rede) => {
+          {redes.map((rede) => {
             const Icone = iconesPorRede[rede.id]
             return (
               <a

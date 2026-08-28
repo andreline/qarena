@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Inbox, Trash2, CheckCheck, MailOpen, ArrowLeft, AlertCircle } from 'lucide-react'
+import { Inbox, Trash2, CheckCheck, MailOpen, ArrowLeft, AlertCircle, Search } from 'lucide-react'
 import { GlassCard } from '@/components/ui/GlassCard'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
@@ -23,7 +23,12 @@ export function CaixaDeEntrada() {
   const limparCaixa = useEmailStore((estado) => estado.limparCaixa)
 
   const [emailSelecionadoId, setEmailSelecionadoId] = useState<string | null>(null)
-  const emailSelecionado = emails.find((e) => e.id === emailSelecionadoId) ?? null
+  const [filtroDestinatario, setFiltroDestinatario] = useState('')
+
+  const emailsFiltrados = emails.filter((email) =>
+    email.destinatario.toLowerCase().includes(filtroDestinatario.trim().toLowerCase()),
+  )
+  const emailSelecionado = emailsFiltrados.find((e) => e.id === emailSelecionadoId) ?? null
 
   function aoSelecionar(email: Email) {
     setEmailSelecionadoId(email.id)
@@ -56,11 +61,14 @@ export function CaixaDeEntrada() {
       </div>
 
       <div
-        className="flex items-start gap-3 rounded-lg border border-neon-purple/30 bg-neon-purple/5 px-4 py-3 text-sm text-ink-muted"
+        className="flex items-start gap-3 rounded-lg border border-neon-purple/40 bg-neon-purple/10 px-4 py-3.5 text-sm text-ink"
         data-testid="caixa-entrada-aviso"
       >
-        <AlertCircle size={18} className="mt-0.5 shrink-0 text-neon-purple" />
-        Esta é uma caixa de entrada simulada. Nenhum e-mail real é enviado, tudo acontece dentro do seu navegador.
+        <AlertCircle size={20} className="mt-0.5 shrink-0 text-neon-purple" />
+        <span>
+          <strong className="font-semibold">Esta é uma caixa de entrada simulada.</strong> Nenhum e-mail real é
+          enviado, tudo acontece dentro do seu navegador.
+        </span>
       </div>
 
       {emails.length === 0 ? (
@@ -74,98 +82,120 @@ export function CaixaDeEntrada() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
-          <div
-            className={cn('flex flex-col gap-2', emailSelecionado && 'hidden lg:flex')}
-            data-testid="caixa-entrada-lista"
-          >
-            {emails.map((email) => (
-              <button
-                key={email.id}
-                type="button"
-                onClick={() => aoSelecionar(email)}
-                data-testid={`caixa-entrada-item-${email.id}`}
-                className={cn(
-                  'flex flex-col gap-1 rounded-xl border p-4 text-left transition-colors cursor-pointer',
-                  emailSelecionadoId === email.id
-                    ? 'border-neon-cyan/50 bg-neon-cyan/5'
-                    : 'border-white/10 bg-base-800/60 hover:border-white/20',
-                )}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className={cn('truncate text-sm', email.lido ? 'text-ink-muted' : 'font-semibold text-ink')}>
-                    {email.remetente}
-                  </span>
-                  {!email.lido && <span className="h-2 w-2 shrink-0 rounded-full bg-neon-cyan" />}
-                </div>
-                <p className={cn('truncate text-sm', email.lido ? 'text-ink-muted' : 'font-semibold text-ink')}>
-                  {email.assunto || '(sem assunto)'}
-                </p>
-                <p className="truncate text-xs text-ink-muted">{trechoDoCorpo(email.corpo)}</p>
-                <p className="text-xs text-ink-muted/70">{formatoData.format(new Date(email.dataEnvio))}</p>
-              </button>
-            ))}
+        <>
+          <div className="relative w-full sm:max-w-xs">
+            <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
+            <input
+              type="text"
+              value={filtroDestinatario}
+              onChange={(e) => setFiltroDestinatario(e.target.value)}
+              placeholder="Filtrar por destinatário"
+              data-testid="caixa-entrada-input-filtro"
+              className="h-10 w-full rounded-lg bg-base-800/80 border border-white/10 pl-9 pr-3 text-sm text-ink placeholder:text-ink-muted/60 outline-none focus:border-neon-cyan"
+            />
           </div>
 
-          <div className={cn('flex flex-col gap-4', !emailSelecionado && 'hidden lg:flex')}>
-            {emailSelecionado ? (
-              <GlassCard className="flex flex-col gap-4 p-6" data-testid="caixa-entrada-leitura">
+          <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
+            <div
+              className={cn('flex flex-col gap-2', emailSelecionado && 'hidden lg:flex')}
+              data-testid="caixa-entrada-lista"
+            >
+              {emailsFiltrados.map((email) => (
                 <button
+                  key={email.id}
                   type="button"
-                  onClick={() => setEmailSelecionadoId(null)}
-                  className="flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink lg:hidden cursor-pointer"
-                  data-testid="caixa-entrada-btn-voltar"
+                  onClick={() => aoSelecionar(email)}
+                  data-testid={`caixa-entrada-item-${email.id}`}
+                  className={cn(
+                    'relative flex flex-col gap-1 rounded-xl border py-4 pl-5 pr-4 text-left transition-colors cursor-pointer',
+                    emailSelecionadoId === email.id
+                      ? 'border-neon-cyan/50 bg-neon-cyan/10'
+                      : 'border-white/10 bg-base-800/60 hover:border-white/20',
+                  )}
                 >
-                  <ArrowLeft size={16} />
-                  Voltar
-                </button>
-
-                <div className="flex flex-col gap-1 border-b border-white/10 pb-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <h2 className="font-display text-lg font-semibold text-ink">
-                      {emailSelecionado.assunto || '(sem assunto)'}
-                    </h2>
-                    <div className="flex shrink-0 items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => marcarComoLido(emailSelecionado.id)}
-                        aria-label="Marcar como lido"
-                        data-testid="caixa-entrada-btn-marcar-lido"
-                        className="text-ink-muted hover:text-neon-cyan cursor-pointer"
-                      >
-                        {emailSelecionado.lido ? <CheckCheck size={18} /> : <MailOpen size={18} />}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => aoApagar(emailSelecionado.id)}
-                        aria-label="Apagar e-mail"
-                        data-testid="caixa-entrada-btn-apagar"
-                        className="text-ink-muted hover:text-danger cursor-pointer"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </div>
-                  <p className="text-sm text-ink-muted">
-                    De <span className="font-mono">{emailSelecionado.remetente}</span> para{' '}
-                    <span className="font-mono">{emailSelecionado.destinatario}</span>
+                  {emailSelecionadoId === email.id && (
+                    <span className="absolute left-0 top-0 h-full w-1 rounded-l-xl bg-neon-cyan" />
+                  )}
+                  {!email.lido && (
+                    <span className="absolute left-2 top-5 h-1.5 w-1.5 rounded-full bg-neon-cyan" />
+                  )}
+                  <p className={cn('truncate pl-2 text-[15px]', email.lido ? 'font-medium text-ink' : 'font-bold text-ink')}>
+                    {email.assunto || '(sem assunto)'}
                   </p>
-                  <p className="text-xs text-ink-muted/70">{formatoData.format(new Date(emailSelecionado.dataEnvio))}</p>
-                </div>
+                  <p className="truncate pl-2 text-xs text-ink-muted">
+                    {email.remetente} · {trechoDoCorpo(email.corpo)}
+                  </p>
+                  <p className="pl-2 text-[11px] text-ink-muted/60">{formatoData.format(new Date(email.dataEnvio))}</p>
+                </button>
+              ))}
 
+              {emailsFiltrados.length === 0 && (
+                <p className="py-8 text-center text-sm text-ink-muted" data-testid="caixa-entrada-filtro-vazio">
+                  Nenhum e-mail encontrado para esse destinatário.
+                </p>
+              )}
+            </div>
+
+            <div className={cn('flex flex-col gap-4', !emailSelecionado && 'hidden lg:flex')}>
+              {emailSelecionado ? (
+                <GlassCard className="flex flex-col overflow-hidden p-0" data-testid="caixa-entrada-leitura">
+                  <div className="flex flex-col gap-2 px-6 pb-4 pt-6">
+                    <button
+                      type="button"
+                      onClick={() => setEmailSelecionadoId(null)}
+                      className="flex w-fit items-center gap-1.5 text-sm text-ink-muted hover:text-ink lg:hidden cursor-pointer"
+                      data-testid="caixa-entrada-btn-voltar"
+                    >
+                      <ArrowLeft size={16} />
+                      Voltar
+                    </button>
+
+                    <div className="flex items-center justify-between gap-2">
+                      <h2 className="font-display text-lg font-semibold text-ink">
+                        {emailSelecionado.assunto || '(sem assunto)'}
+                      </h2>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => marcarComoLido(emailSelecionado.id)}
+                          aria-label="Marcar como lido"
+                          data-testid="caixa-entrada-btn-marcar-lido"
+                          className="text-ink-muted hover:text-neon-cyan cursor-pointer"
+                        >
+                          {emailSelecionado.lido ? <CheckCheck size={18} /> : <MailOpen size={18} />}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => aoApagar(emailSelecionado.id)}
+                          aria-label="Apagar e-mail"
+                          data-testid="caixa-entrada-btn-apagar"
+                          className="text-ink-muted hover:text-danger cursor-pointer"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-sm text-ink-muted">
+                      De <span className="font-mono">{emailSelecionado.remetente}</span> para{' '}
+                      <span className="font-mono">{emailSelecionado.destinatario}</span>
+                    </p>
+                    <p className="text-xs text-ink-muted/70">{formatoData.format(new Date(emailSelecionado.dataEnvio))}</p>
+                  </div>
+
+                  <div data-testid="caixa-entrada-corpo" dangerouslySetInnerHTML={{ __html: emailSelecionado.corpo }} />
+                </GlassCard>
+              ) : (
                 <div
-                  data-testid="caixa-entrada-corpo"
-                  dangerouslySetInnerHTML={{ __html: emailSelecionado.corpo }}
-                />
-              </GlassCard>
-            ) : (
-              <div className="hidden flex-1 flex-col items-center justify-center gap-2 text-center lg:flex" data-testid="caixa-entrada-sem-selecao">
-                <Badge tom="muted">Nenhum e-mail selecionado</Badge>
-                <p className="text-sm text-ink-muted">Escolha um e-mail na lista para ler o conteúdo aqui.</p>
-              </div>
-            )}
+                  className="hidden flex-1 flex-col items-center justify-center gap-2 text-center lg:flex"
+                  data-testid="caixa-entrada-sem-selecao"
+                >
+                  <Badge tom="muted">Nenhum e-mail selecionado</Badge>
+                  <p className="text-sm text-ink-muted">Escolha um e-mail na lista para ler o conteúdo aqui.</p>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   )

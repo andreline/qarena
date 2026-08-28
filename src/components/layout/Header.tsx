@@ -13,12 +13,14 @@ interface ItemNav {
 
 const itensNav: ItemNav[] = [
   { rotulo: 'Início', rota: '/', disponivel: true },
+  { rotulo: 'Sobre a criadora', rota: '/sobre', disponivel: true },
   { rotulo: 'Meus Cursos', rota: '/cursos', disponivel: true },
   { rotulo: 'Requisitos', rota: '/requisitos', disponivel: true },
   { rotulo: 'Instruções', rota: '/instrucoes', disponivel: true },
   { rotulo: 'Massa de dados', rota: '/massa-de-dados', disponivel: true },
   { rotulo: 'Missões', rota: '/missoes', disponivel: true },
   { rotulo: 'Meu Progresso', rota: '/progresso', disponivel: true },
+  { rotulo: 'Caixa de Entrada', rota: '/caixa-de-entrada', disponivel: true },
   { rotulo: 'Central de Bugs', rota: '/central-de-bugs', disponivel: true },
 ]
 
