@@ -10,6 +10,13 @@ import { useCarrinhoStore } from '@/store/carrinhoStore'
 import { useAuthStore } from '@/store/authStore'
 import { usePedidosStore } from '@/store/pedidosStore'
 import { useCatalogoProdutos } from '@/store/catalogoAdminStore'
+import { useEmailStore } from '@/store/emailStore'
+import {
+  montarEmailPedidoConfirmado,
+  montarEmailPedidoEnviado,
+  montarEmailCupomDesbloqueado,
+  REMETENTE_QARENA,
+} from '@/data/templatesEmail'
 
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
@@ -26,6 +33,7 @@ export function Checkout() {
   const debitarCreditos = useAuthStore((estado) => estado.debitarCreditos)
   const criarPedido = usePedidosStore((estado) => estado.criarPedido)
   const pedidos = usePedidosStore((estado) => estado.pedidos)
+  const criarEmail = useEmailStore((estado) => estado.criarEmail)
 
   const [codigoCupom, setCodigoCupom] = useState('')
   const [cupomAplicado, setCupomAplicado] = useState<Cupom | null>(null)
@@ -96,6 +104,53 @@ export function Checkout() {
       enderecoEntrega: 'Endereço cadastrado na conta',
       codigoRastreio: null,
     })
+
+    const {
+      assunto: assuntoPedido,
+      corpo: corpoPedido,
+      remetente: remetentePedido,
+    } = montarEmailPedidoConfirmado(
+      usuario.nome,
+      pedido.numeroPedido,
+      itensComProduto.map(({ item, produto }) => ({ nome: produto.nome, quantidade: item.quantidade })),
+      subtotal,
+      pedido.enderecoEntrega,
+    )
+    criarEmail({
+      remetente: remetentePedido,
+      destinatario: usuario.email,
+      assunto: assuntoPedido,
+      corpo: corpoPedido,
+      tipo: 'pedido-confirmado',
+    })
+
+    const { assunto: assuntoCupom, corpo: corpoCupom } = montarEmailCupomDesbloqueado(usuario.nome, 'PRIMEIRACOMPRA')
+    criarEmail({
+      remetente: REMETENTE_QARENA,
+      destinatario: usuario.email,
+      assunto: assuntoCupom,
+      corpo: corpoCupom,
+      tipo: 'cupom-desbloqueado',
+    })
+
+    if (pedido.status === 'Enviado') {
+      const outroPedidoComRastreio = pedidos.find((p) => p.id !== pedido.id && p.codigoRastreio)
+      const codigoRastreioErrado = outroPedidoComRastreio?.codigoRastreio ?? 'BR000000000BR'
+      const linkRastreio = `${window.location.origin}/app/pedidos/rastreio`
+      const { assunto: assuntoEnvio, corpo: corpoEnvio } = montarEmailPedidoEnviado(
+        usuario.nome,
+        pedido.numeroPedido,
+        codigoRastreioErrado,
+        linkRastreio,
+      )
+      criarEmail({
+        remetente: REMETENTE_QARENA,
+        destinatario: usuario.email,
+        assunto: assuntoEnvio,
+        corpo: corpoEnvio,
+        tipo: 'pedido-enviado',
+      })
+    }
 
     limparCarrinho()
     setPedidoConcluido({ numero: pedido.numeroPedido, total })

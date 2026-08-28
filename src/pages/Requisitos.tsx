@@ -141,6 +141,22 @@ const secoes: SecaoRequisitos[] = [
       'O campo de confirmar nova senha deve ser comparado com o campo de nova senha',
     ],
   },
+  {
+    id: 'caixa-de-entrada',
+    titulo: 'Caixa de Entrada',
+    itens: [
+      'As variáveis do template do e-mail devem ser substituídas pelo valor real',
+      'A acentuação do corpo do e-mail deve aparecer correta, sem caracteres estranhos',
+      'O valor total no e-mail de confirmação de pedido deve ser igual ao valor mostrado na tela do pedido',
+      'A data no e-mail deve aparecer no formato brasileiro, igual ao resto do site',
+      'O botão principal do e-mail deve levar a uma rota que existe no site',
+      'Todo e-mail enviado deve ter um assunto preenchido',
+      'O e-mail de confirmação de pedido só deve ser gerado quando o pagamento é aceito',
+      'O remetente dos e-mails deve usar sempre o mesmo domínio do site',
+      'O e-mail de senha alterada só deve ser gerado depois de a senha ser efetivamente trocada',
+      'O e-mail de pedido enviado deve trazer o código de rastreio do próprio pedido',
+    ],
+  },
 ]
 
 export function Requisitos() {

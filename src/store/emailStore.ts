@@ -26,6 +26,9 @@ type DadosNovoEmail = Omit<Email, 'id' | 'dataEnvio' | 'lido'>
 interface EmailState {
   emails: Email[]
   criarEmail: (dados: DadosNovoEmail) => Email
+  marcarComoLido: (id: string) => void
+  apagarEmail: (id: string) => void
+  limparCaixa: () => void
 }
 
 export const useEmailStore = create<EmailState>()(
@@ -44,6 +47,18 @@ export const useEmailStore = create<EmailState>()(
         set({ emails: [email, ...estado.emails] })
         return email
       },
+
+      marcarComoLido: (id) => {
+        const estado = get()
+        set({ emails: estado.emails.map((e) => (e.id === id ? { ...e, lido: true } : e)) })
+      },
+
+      apagarEmail: (id) => {
+        const estado = get()
+        set({ emails: estado.emails.filter((e) => e.id !== id) })
+      },
+
+      limparCaixa: () => set({ emails: [] }),
     }),
     { name: 'qarena-emails' },
   ),

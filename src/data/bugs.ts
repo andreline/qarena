@@ -432,6 +432,66 @@ export const bugs: Bug[] = [
     comportamentoEsperado: 'O campo de confirmar nova senha deve ser comparado com o campo de nova senha.',
     comportamentoAtual: 'O campo de confirmar nova senha não é comparado com o campo de nova senha.',
   },
+  {
+    id: 'EML-01',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'As variáveis do template do e-mail devem ser substituídas pelo valor real.',
+    comportamentoAtual: 'Uma variável de template não é substituída, e o e-mail mostra "Olá, {{nome}}".',
+  },
+  {
+    id: 'EML-02',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'A acentuação do corpo do e-mail deve aparecer correta, sem caracteres estranhos.',
+    comportamentoAtual: 'A acentuação do corpo do e-mail aparece quebrada, com nomes acentuados virando caracteres estranhos.',
+  },
+  {
+    id: 'EML-03',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'O valor total no e-mail de confirmação de pedido deve ser igual ao valor mostrado na tela do pedido.',
+    comportamentoAtual: 'O valor total no e-mail de confirmação diverge do valor mostrado na tela do pedido.',
+  },
+  {
+    id: 'EML-04',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'A data no e-mail deve aparecer no formato brasileiro, igual ao resto do site.',
+    comportamentoAtual: 'A data no e-mail de envio do pedido aparece em formato americano, diferente do resto do site.',
+  },
+  {
+    id: 'EML-05',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'O botão principal do e-mail deve levar a uma rota que existe no site.',
+    comportamentoAtual: 'O botão principal do e-mail de envio do pedido leva para uma rota que não existe.',
+  },
+  {
+    id: 'EML-06',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'Todo e-mail enviado deve ter um assunto preenchido.',
+    comportamentoAtual: 'O e-mail de cupom desbloqueado chega com o assunto vazio.',
+  },
+  {
+    id: 'EML-07',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'O e-mail de confirmação de pedido só deve ser gerado quando o pagamento é aceito.',
+    comportamentoAtual: 'O e-mail de confirmação de pedido é gerado mesmo quando a compra é concluída sem créditos suficientes.',
+  },
+  {
+    id: 'EML-08',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'O remetente dos e-mails deve usar sempre o mesmo domínio do site.',
+    comportamentoAtual: 'O e-mail de confirmação de pedido chega com o remetente em um domínio diferente do resto do site.',
+  },
+  {
+    id: 'EML-09',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'O e-mail de senha alterada só deve ser gerado depois de a senha ser efetivamente trocada.',
+    comportamentoAtual: 'O e-mail de senha alterada é gerado mesmo quando a senha não chega a ser efetivamente trocada.',
+  },
+  {
+    id: 'EML-10',
+    tela: 'Caixa de Entrada',
+    comportamentoEsperado: 'O e-mail de pedido enviado deve trazer o código de rastreio do próprio pedido.',
+    comportamentoAtual: 'O e-mail de pedido enviado traz o código de rastreio de outro pedido.',
+  },
 ]
 
 export const totalBugsCatalogados = bugs.length

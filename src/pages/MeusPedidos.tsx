@@ -5,6 +5,9 @@ import { Badge } from '@/components/ui/Badge'
 import { useAuthStore } from '@/store/authStore'
 import { usePedidosStore, type StatusPedido } from '@/store/pedidosStore'
 import { useCatalogoProdutos } from '@/store/catalogoAdminStore'
+import { useEmailStore } from '@/store/emailStore'
+import { montarEmailPedidoCancelado, REMETENTE_QARENA } from '@/data/templatesEmail'
+import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
 const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -43,9 +46,20 @@ export function MeusPedidos() {
   const produtos = useCatalogoProdutos()
   const usuario = useAuthStore((estado) => estado.usuarioLogado)
   const pedidos = usePedidosStore((estado) => estado.pedidos)
+  const cancelarPedido = usePedidosStore((estado) => estado.cancelarPedido)
+  const criarEmail = useEmailStore((estado) => estado.criarEmail)
   const [filtroStatus, setFiltroStatus] = useState<StatusPedido | 'Todos'>('Todos')
 
   if (!usuario) return null
+
+  function aoCancelar(pedidoId: string, numeroPedido: string) {
+    if (!usuario) return
+    cancelarPedido(pedidoId)
+    const { assunto, corpo } = montarEmailPedidoCancelado(usuario.nome, numeroPedido)
+    criarEmail({ remetente: REMETENTE_QARENA, destinatario: usuario.email, assunto, corpo, tipo: 'pedido-cancelado' })
+  }
+
+  const statusCancelaveis: StatusPedido[] = ['Aguardando pagamento', 'Pago', 'Em separação']
 
   const pedidosDoUsuario = pedidos
 
@@ -117,6 +131,18 @@ export function MeusPedidos() {
                 {formatoMoeda.format(pedido.subtotal)}
               </span>
             </div>
+
+            {statusCancelaveis.includes(pedido.status) && (
+              <Button
+                variante="danger"
+                tamanho="sm"
+                onClick={() => aoCancelar(pedido.id, pedido.numeroPedido)}
+                data-testid={`pedidos-btn-cancelar-${pedido.numeroPedido}`}
+                className="self-start"
+              >
+                Cancelar pedido
+              </Button>
+            )}
           </GlassCard>
         ))}
       </div>

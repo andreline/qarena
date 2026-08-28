@@ -1,7 +1,8 @@
 import { Outlet, Link } from 'react-router-dom'
-import { Store, ShoppingCart, User, Package, LogOut, ShieldCheck } from 'lucide-react'
+import { Store, ShoppingCart, User, Package, LogOut, ShieldCheck, Mail } from 'lucide-react'
 import { Footer } from './Footer'
 import { useCarrinhoStore } from '@/store/carrinhoStore'
+import { useEmailStore } from '@/store/emailStore'
 
 interface AppLayoutProps {
   nome: string
@@ -16,10 +17,12 @@ const atalhos = [
   { rotulo: 'Carrinho', rota: '/app/carrinho', Icone: ShoppingCart },
   { rotulo: 'Perfil', rota: '/app/perfil', Icone: User },
   { rotulo: 'Meus Pedidos', rota: '/app/pedidos', Icone: Package },
+  { rotulo: 'Caixa de Entrada', rota: '/caixa-de-entrada', Icone: Mail },
 ]
 
 export function AppLayout({ nome, numeroConta, creditos, admin, aoSair }: AppLayoutProps) {
   const quantidadeCarrinho = useCarrinhoStore((estado) => estado.quantidadeTotal)
+  const emailsNaoLidos = useEmailStore((estado) => estado.emails.filter((e) => !e.lido).length)
 
   return (
     <div className="flex min-h-screen flex-col md:flex-row">
@@ -68,6 +71,14 @@ export function AppLayout({ nome, numeroConta, creditos, admin, aoSair }: AppLay
                   className="flex h-5 min-w-5 items-center justify-center rounded-full bg-neon-cyan px-1.5 font-mono text-xs font-semibold text-base-900"
                 >
                   {quantidadeCarrinho}
+                </span>
+              )}
+              {rota === '/caixa-de-entrada' && emailsNaoLidos > 0 && (
+                <span
+                  data-testid="app-sidebar-badge-caixa-de-entrada"
+                  className="flex h-5 min-w-5 items-center justify-center rounded-full bg-neon-cyan px-1.5 font-mono text-xs font-semibold text-base-900"
+                >
+                  {emailsNaoLidos}
                 </span>
               )}
             </Link>

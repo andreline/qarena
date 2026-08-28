@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { useAuthStore } from '@/store/authStore'
+import { useEmailStore } from '@/store/emailStore'
+import { montarEmailSenhaAlterada, REMETENTE_QARENA } from '@/data/templatesEmail'
 
 interface ErrosDados {
   nome?: string
@@ -18,6 +20,7 @@ interface ErrosSenha {
 export function Perfil() {
   const usuario = useAuthStore((estado) => estado.usuarioLogado)
   const atualizarPerfil = useAuthStore((estado) => estado.atualizarPerfil)
+  const criarEmail = useEmailStore((estado) => estado.criarEmail)
   const { mostrarToast } = useToast()
 
   const [nome, setNome] = useState(usuario?.nome ?? '')
@@ -46,6 +49,7 @@ export function Perfil() {
 
   function aoAlterarSenha(evento: FormEvent) {
     evento.preventDefault()
+    if (!usuario) return
 
     const novosErros: ErrosSenha = {}
     if (novaSenha.length < 6) novosErros.novaSenha = 'A nova senha deve ter pelo menos 6 caracteres'
@@ -54,6 +58,10 @@ export function Perfil() {
     if (confirmarNovaSenha !== novaSenha) return
 
     atualizarPerfil({ senha: novaSenha })
+
+    const { assunto, corpo } = montarEmailSenhaAlterada(usuario.nome)
+    criarEmail({ remetente: REMETENTE_QARENA, destinatario: usuario.email, assunto, corpo, tipo: 'senha-alterada' })
+
     setSenhaAtual('')
     setNovaSenha('')
     setConfirmarNovaSenha('')

@@ -16,6 +16,7 @@ interface PedidosState {
   pedidos: Pedido[]
   proximoNumero: number
   criarPedido: (dados: DadosNovoPedido) => Pedido
+  cancelarPedido: (id: string) => void
 }
 
 export const usePedidosStore = create<PedidosState>()(
@@ -39,6 +40,13 @@ export const usePedidosStore = create<PedidosState>()(
 
         set({ pedidos: [...estado.pedidos, pedido], proximoNumero: estado.proximoNumero + 1 })
         return pedido
+      },
+
+      cancelarPedido: (id) => {
+        const estado = get()
+        set({
+          pedidos: estado.pedidos.map((p) => (p.id === id ? { ...p, status: 'Cancelado' } : p)),
+        })
       },
     }),
     { name: 'qarena-pedidos' },

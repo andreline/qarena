@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { useEmailStore } from './emailStore'
-import { montarEmailRecuperacaoSenha, REMETENTE_QARENA } from '@/data/templatesEmail'
+import { montarEmailRecuperacaoSenha, montarEmailBoasVindas, montarEmailSenhaAlterada, REMETENTE_QARENA } from '@/data/templatesEmail'
 
 export interface Pendencias {
   cpfConfirmado: boolean
@@ -441,6 +441,15 @@ export const useAuthStore = create<AuthState>()(
           proximoNumeroConta: estado.proximoNumeroConta + 1,
         })
 
+        const { assunto, corpo } = montarEmailBoasVindas(novoUsuario.nome, novoUsuario.numeroConta)
+        useEmailStore.getState().criarEmail({
+          remetente: REMETENTE_QARENA,
+          destinatario: novoUsuario.email,
+          assunto,
+          corpo,
+          tipo: 'boas-vindas',
+        })
+
         return novoUsuario
       },
 
@@ -555,6 +564,16 @@ export const useAuthStore = create<AuthState>()(
         if (!registro) return { sucesso: false, erro: 'Link inválido ou expirado.' }
         const usuario = estado.usuarios.find((u) => u.email === registro.email)
         if (!usuario) return { sucesso: false, erro: 'Link inválido ou expirado.' }
+
+        const { assunto, corpo } = montarEmailSenhaAlterada(usuario.nome)
+        useEmailStore.getState().criarEmail({
+          remetente: REMETENTE_QARENA,
+          destinatario: usuario.email,
+          assunto,
+          corpo,
+          tipo: 'senha-alterada',
+        })
+
         return { sucesso: true, usuario }
       },
     }),

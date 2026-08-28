@@ -24,6 +24,7 @@ import { ContaInativa } from '@/pages/ContaInativa'
 import { AdminProdutos } from '@/pages/AdminProdutos'
 import { EsqueciSenha } from '@/pages/EsqueciSenha'
 import { RedefinirSenha } from '@/pages/RedefinirSenha'
+import { CaixaDeEntrada } from '@/pages/CaixaDeEntrada'
 import { NotFound } from '@/pages/NotFound'
 
 export function App() {
@@ -55,6 +56,7 @@ export function App() {
           <Route path="/app/checkout" element={<Checkout />} />
           <Route path="/app/perfil" element={<Perfil />} />
           <Route path="/app/pedidos" element={<MeusPedidos />} />
+          <Route path="/caixa-de-entrada" element={<CaixaDeEntrada />} />
           <Route path="/regularizacao" element={<RegularizacaoCadastro />} />
           <Route path="/conta-inativa" element={<ContaInativa />} />
           <Route path="/admin" element={<AdminProdutos />} />
