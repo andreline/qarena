@@ -173,7 +173,7 @@ export function Home() {
             className="h-12 w-12 shrink-0 rounded-full object-cover"
           />
           <p className="text-sm text-ink-muted">
-            Feito por Andreline Lira, Analista de Qualidade Sênior.{' '}
+            Feito por Andreline Lira, Engenheira de Qualidade de Software Sênior.{' '}
             <span className="inline-flex items-center gap-1 text-neon-cyan">
               Conheça quem criou este ambiente
               <ArrowRight size={14} />

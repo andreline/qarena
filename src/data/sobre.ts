@@ -7,7 +7,7 @@ export interface SecaoSobre {
 export const aberturaSobre = {
   titulo: 'Prazer, eu sou a Andreline',
   texto:
-    'Analista de Qualidade de Software Sênior, com quase dez anos de estrada em QA. E fui eu que construí a QArena, do primeiro requisito até o último bug plantado.',
+    'Engenheira de Qualidade de Software Sênior, com quase dez anos de estrada em QA. E fui eu que construí a QArena, do primeiro requisito até o último bug plantado.',
 }
 
 export const secoesSobre: SecaoSobre[] = [

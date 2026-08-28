@@ -7,6 +7,6 @@ export interface RedeSocial {
 export const redes: RedeSocial[] = [
   { id: 'instagram', nome: 'Instagram', url: 'https://www.instagram.com/andreline.qa/' },
   { id: 'linkedin', nome: 'LinkedIn', url: 'https://www.linkedin.com/in/andrelineflira/' },
-  { id: 'tiktok', nome: 'TikTok', url: 'https://www.tiktok.com/@andreline.lira' },
+  { id: 'tiktok', nome: 'TikTok', url: 'https://www.tiktok.com/@andreline.qa' },
   { id: 'github', nome: 'GitHub', url: 'https://github.com/andreline' },
 ]
