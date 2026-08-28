@@ -29,6 +29,8 @@ interface ProgressoState {
   salvarBugReport: (id: string, dados: Omit<BugReportMissao, 'salvoEm'>) => void
   marcarNivelCelebrado: (numero: number) => void
   resetarProgresso: () => void
+  exportarBackup: () => string
+  importarBackup: (codigo: string) => boolean
 }
 
 const estadoInicial = {
@@ -39,6 +41,26 @@ const estadoInicial = {
   niveisCelebrados: [] as number[],
   primeiroAcesso: null as string | null,
   contadorSessoes: 0,
+}
+
+const PREFIXO_BACKUP = 'QARENA-BKP1:'
+
+function codificarBackup(dados: unknown): string {
+  const json = JSON.stringify(dados)
+  return PREFIXO_BACKUP + btoa(unescape(encodeURIComponent(json)))
+}
+
+function decodificarBackup(codigo: string): Partial<typeof estadoInicial> | null {
+  try {
+    const limpo = codigo.replace(/\s+/g, '')
+    if (!limpo.startsWith(PREFIXO_BACKUP)) return null
+    const json = decodeURIComponent(escape(atob(limpo.slice(PREFIXO_BACKUP.length))))
+    const dados = JSON.parse(json)
+    if (!dados || !Array.isArray(dados.missoesConcluidas)) return null
+    return dados
+  } catch {
+    return null
+  }
 }
 
 export const useProgressoStore = create<ProgressoState>()(
@@ -92,6 +114,34 @@ export const useProgressoStore = create<ProgressoState>()(
       },
 
       resetarProgresso: () => set({ ...estadoInicial }),
+
+      exportarBackup: () => {
+        const estado = get()
+        return codificarBackup({
+          missoesConcluidas: estado.missoesConcluidas,
+          missoesEmAndamento: estado.missoesEmAndamento,
+          dicasUsadas: estado.dicasUsadas,
+          bugReports: estado.bugReports,
+          niveisCelebrados: estado.niveisCelebrados,
+          primeiroAcesso: estado.primeiroAcesso,
+          contadorSessoes: estado.contadorSessoes,
+        })
+      },
+
+      importarBackup: (codigo) => {
+        const dados = decodificarBackup(codigo)
+        if (!dados) return false
+        set({
+          missoesConcluidas: dados.missoesConcluidas ?? [],
+          missoesEmAndamento: dados.missoesEmAndamento ?? [],
+          dicasUsadas: dados.dicasUsadas ?? [],
+          bugReports: dados.bugReports ?? {},
+          niveisCelebrados: dados.niveisCelebrados ?? [],
+          primeiroAcesso: dados.primeiroAcesso ?? null,
+          contadorSessoes: dados.contadorSessoes ?? 0,
+        })
+        return true
+      },
     }),
     { name: 'qarena-progresso' },
   ),

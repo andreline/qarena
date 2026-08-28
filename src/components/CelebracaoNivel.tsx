@@ -142,7 +142,7 @@ export function CelebracaoNivel({ nivel, missoesConcluidas, aoFinalizar }: Celeb
               }}
             />
             <div className="animate-escudo-entrada">
-              <Escudo nivel={nivel.numero} tamanho={200} brilhoPulsante girando={nivel6} data-testid="celebracao-escudo" />
+              <Escudo nivel={nivel.numero} tamanho={200} brilhoPulsante data-testid="celebracao-escudo" />
             </div>
           </div>
 

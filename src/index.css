@@ -127,6 +127,18 @@
   .animate-fade-simples {
     animation: fade-simples 250ms ease-out forwards;
   }
+
+  .animate-brilho-cintilar {
+    animation: brilho-cintilar 2.2s ease-in-out infinite;
+  }
+
+  .animate-arco-girar {
+    animation: raios-girar 12s linear infinite;
+  }
+
+  .animate-escudo-hue-lenta {
+    animation: escudo-hue 9s linear infinite;
+  }
 }
 
 @keyframes escudo-pulso {
@@ -137,6 +149,11 @@
 @keyframes escudo-hue {
   from { filter: hue-rotate(0deg); }
   to { filter: hue-rotate(360deg); }
+}
+
+@keyframes brilho-cintilar {
+  0%, 100% { opacity: 0.55; transform: scale(0.85) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.05) rotate(12deg); }
 }
 
 @keyframes raios-girar {
@@ -181,7 +198,10 @@
   .animate-escudo-girando,
   .animate-raios,
   .animate-particula,
-  .animate-confete {
+  .animate-confete,
+  .animate-brilho-cintilar,
+  .animate-arco-girar,
+  .animate-escudo-hue-lenta {
     animation: none !important;
   }
 
