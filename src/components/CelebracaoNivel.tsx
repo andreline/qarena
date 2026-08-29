@@ -84,7 +84,7 @@ export function CelebracaoNivel({ nivel, missoesConcluidas, aoFinalizar }: Celeb
   const confetes = useMemo(() => (reduzido ? [] : gerarConfete(50)), [reduzido])
 
   function avancar() {
-    if (nivel.cupom) {
+    if (nivel.cupons && nivel.cupons.length > 0) {
       setEtapa('recompensa')
     } else {
       aoFinalizar()
@@ -173,7 +173,7 @@ export function CelebracaoNivel({ nivel, missoesConcluidas, aoFinalizar }: Celeb
     )
   }
 
-  const cupom = nivel.cupom!
+  const cupons = nivel.cupons ?? []
 
   return (
     <div
@@ -201,27 +201,40 @@ export function CelebracaoNivel({ nivel, missoesConcluidas, aoFinalizar }: Celeb
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan">
             <Gift size={24} />
           </span>
-          <p className="text-sm text-ink-muted">Seu prêmio</p>
+          <p className="text-sm text-ink-muted">{cupons.length > 1 ? 'Seus prêmios' : 'Seu prêmio'}</p>
           <h2 className="font-display text-2xl font-bold text-ink" data-testid="celebracao-recompensa-titulo">
-            {cupom.percentual}% de desconto no curso QA do Zero
+            {cupons.length > 1
+              ? `Você desbloqueou ${cupons.length} cupons de desconto!`
+              : `${cupons[0].percentual}% de desconto no curso ${cupons[0].curso}`}
           </h2>
 
-          <div className="flex items-center justify-center rounded-lg border border-dashed border-neon-cyan/50 bg-neon-cyan/5 px-6 py-3">
-            <span className="font-mono text-xl text-neon-cyan" data-testid="celebracao-cupom-codigo">
-              {cupom.codigo}
-            </span>
+          <div className="flex w-full flex-col gap-4">
+            {cupons.map((cupom) => (
+              <div key={cupom.codigo} className="flex flex-col items-center gap-2">
+                {cupons.length > 1 && (
+                  <p className="text-sm text-ink-muted">
+                    {cupom.percentual}% off — {cupom.curso}
+                  </p>
+                )}
+                <div className="flex w-full items-center justify-center rounded-lg border border-dashed border-neon-cyan/50 bg-neon-cyan/5 px-6 py-3">
+                  <span className="font-mono text-xl text-neon-cyan" data-testid={`celebracao-cupom-codigo-${cupom.codigo}`}>
+                    {cupom.codigo}
+                  </span>
+                </div>
+                <BotaoCopiar valor={cupom.codigo} testId={`celebracao-btn-copiar-cupom-${cupom.codigo}`} rotulo="Copiar cupom" />
+              </div>
+            ))}
           </div>
-
-          <BotaoCopiar valor={cupom.codigo} testId="celebracao-btn-copiar-cupom" rotulo="Copiar cupom" />
 
           <Link to="/cursos" onClick={aoFinalizar} className="w-full">
             <Button variante="primary" data-testid="celebracao-btn-conhecer-curso" className="w-full">
-              Conhecer o curso
+              {cupons.length > 1 ? 'Conhecer os cursos' : 'Conhecer o curso'}
             </Button>
           </Link>
 
           <p className="text-xs text-ink-muted/70">
-            Seu cupom fica salvo na aba de progresso, você pode voltar quando quiser.
+            {cupons.length > 1 ? 'Seus cupons ficam salvos' : 'Seu cupom fica salvo'} na aba de progresso, você pode
+            voltar quando quiser.
           </p>
         </GlassCard>
 

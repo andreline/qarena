@@ -289,6 +289,7 @@ export function Progresso() {
                 data-testid={`progresso-cupom-${cupom.codigo}`}
               >
                 <span className="font-display text-lg font-bold text-ink">{cupom.percentual}% off</span>
+                <span className="text-xs text-ink-muted">{cupom.curso}</span>
                 <span className="font-mono text-neon-cyan">{cupom.codigo}</span>
                 <div className="flex gap-2">
                   <BotaoCopiar valor={cupom.codigo} testId={`progresso-btn-copiar-${cupom.codigo}`} />

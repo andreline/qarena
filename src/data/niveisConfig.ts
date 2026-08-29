@@ -3,6 +3,7 @@ export type SimboloNivel = 'lupa' | 'inseto' | 'lupa-inseto' | 'alvo' | 'inseto-
 export interface CupomNivel {
   codigo: string
   percentual: number
+  curso: string
 }
 
 export interface NivelConfig {
@@ -12,7 +13,7 @@ export interface NivelConfig {
   simbolo: SimboloNivel
   gradiente: string[]
   neon: string
-  cupom?: CupomNivel
+  cupons?: CupomNivel[]
 }
 
 export const niveis: NivelConfig[] = [
@@ -47,7 +48,7 @@ export const niveis: NivelConfig[] = [
     simbolo: 'alvo',
     gradiente: ['#7c3aed', '#1e0d3d'],
     neon: '#a855f7',
-    cupom: { codigo: 'QARENA5', percentual: 5 },
+    cupons: [{ codigo: 'QARENA5', percentual: 5, curso: 'QA do Zero' }],
   },
   {
     numero: 5,
@@ -56,7 +57,7 @@ export const niveis: NivelConfig[] = [
     simbolo: 'inseto-escudo',
     gradiente: ['#e935c1', '#3d0a33'],
     neon: '#f472d0',
-    cupom: { codigo: 'QARENA10', percentual: 10 },
+    cupons: [{ codigo: 'QARENA10', percentual: 10, curso: 'QA do Zero' }],
   },
   {
     numero: 6,
@@ -65,7 +66,10 @@ export const niveis: NivelConfig[] = [
     simbolo: 'coroa-lupa',
     gradiente: ['#22d3ee', '#8b5cf6', '#ec4faf'],
     neon: '#22d3ee',
-    cupom: { codigo: 'QARENA15', percentual: 15 },
+    cupons: [
+      { codigo: 'QARENA15', percentual: 15, curso: 'QA do Zero' },
+      { codigo: 'QARENACLAUDE15', percentual: 15, curso: 'IA para QA e Tech: Claude Além do Prompt' },
+    ],
   },
 ]
 
@@ -90,6 +94,6 @@ export function calcularProximoNivel(quantidadeConcluidas: number): NivelConfig 
 
 export function cuponsDesbloqueados(quantidadeConcluidas: number): CupomNivel[] {
   return niveis
-    .filter((n) => n.cupom && quantidadeConcluidas >= n.missoesNecessarias)
-    .map((n) => n.cupom as CupomNivel)
+    .filter((n) => quantidadeConcluidas >= n.missoesNecessarias)
+    .flatMap((n) => n.cupons ?? [])
 }
